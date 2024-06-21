@@ -3,6 +3,7 @@ import { NodeProps } from "reactflow";
 import { Handle, Position } from "reactflow";
 import { updtaeNodeState } from "../redux/nodes/slice";
 import { useDispatch } from "react-redux";
+import { generateRandomId } from "../utils/generate";
 
 const randomData = [
 	"Chest Pain",
@@ -43,21 +44,22 @@ const randomData = [
 ];
 
 function SymptomNodeInit({
-	data: { symptom },
-}: NodeProps<{ symptom: string }>) {
+	data: { symptom, parentID },
+}: NodeProps<{ symptom: string; parentID: string }>) {
 	const dispatch = useDispatch();
 
 	const handleOnClick = () => {
 		const rn = Math.floor(Math.random() * randomData.length);
 		const slice = randomData.slice(rn, rn + 5);
-		const pId = symptom;
+		const pId = parentID;
 
 		slice.forEach((symptom) => {
+			const id = generateRandomId(5);
 			dispatch(
 				updtaeNodeState({
-					id: symptom,
+					id: id,
 					type: "symptomNode",
-					data: { symptom },
+					data: { symptom, parentID: id },
 					position: { x: 0, y: 0 },
 					parentId: pId,
 				})
