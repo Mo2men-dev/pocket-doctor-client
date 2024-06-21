@@ -1,0 +1,26 @@
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import layoutSlice from "./nodes/slice";
+
+const appReducer = combineReducers({
+	layoutState: layoutSlice,
+});
+
+const rootReducer = (state: any, action: any) => {
+	if (action.type === "reset") {
+		state = {
+			layoutState: {
+				nodes: [],
+				edges: [],
+			},
+		};
+	}
+
+	return appReducer(state, action);
+};
+
+const store = configureStore({
+	reducer: rootReducer,
+});
+
+export type AppDispatch = typeof store.dispatch;
+export default store;

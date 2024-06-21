@@ -1,0 +1,2 @@
+- [x] get the first node to display
+- [ ] display nodes in a layout
