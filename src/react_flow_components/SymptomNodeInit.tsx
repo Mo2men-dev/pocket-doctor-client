@@ -76,7 +76,7 @@ function SymptomNodeInit({
 				id="a"
 			/>
 			<div
-				className="bg-blue-500 text-white p-2 rounded-lg shadow-lg cursor-pointer"
+				className="bg-blue-500 text-white rounded-sm p-2 shadow-lg cursor-pointer text-sm"
 				onClick={handleOnClick}>
 				{symptom}
 			</div>

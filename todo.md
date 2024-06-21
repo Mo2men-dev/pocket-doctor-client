@@ -2,3 +2,5 @@
 - [x] display nodes in a layout
 - [x] nodes can be added dymaically
 - [x] canvas auto fits view when nodes are added
+- [x] BUG - Dublicate prarentId breaking the tree
+- [x] BUG - Dublicate nodeId breaking the tree

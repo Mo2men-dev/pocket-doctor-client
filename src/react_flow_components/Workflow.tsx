@@ -44,8 +44,9 @@ function Workflow() {
 			reactFlowInstance?.fitView({
 				duration: 1000,
 				includeHiddenNodes: true,
+				padding: 0.1,
 			});
-		}, 500);
+		}, 100);
 	}, [nodeState]);
 
 	return (
