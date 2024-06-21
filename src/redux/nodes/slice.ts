@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { Edge } from "reactflow";
 import {
 	initialEdges,
-	proccedNodes,
+	initialNodes,
 } from "../../react_flow_components/constants";
 
 export interface LayoutState {
@@ -13,7 +13,7 @@ export interface LayoutState {
 const layoutSlice = createSlice({
 	name: "layoutState",
 	initialState: {
-		nodes: proccedNodes,
+		nodes: initialNodes,
 		edges: initialEdges,
 	},
 	reducers: {

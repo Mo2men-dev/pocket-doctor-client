@@ -1,10 +1,8 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import ReactFlow, {
 	Background,
-	Connection,
 	Controls,
 	ReactFlowInstance,
-	addEdge,
 	useEdgesState,
 	useNodesState,
 } from "reactflow";
