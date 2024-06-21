@@ -16,7 +16,12 @@ const layoutSlice = createSlice({
 		nodes: proccedNodes,
 		edges: initialEdges,
 	},
-	reducers: {},
+	reducers: {
+		updtaeNodeState: (state, action) => {
+			state.nodes = [...state.nodes, action.payload];
+		},
+	},
 });
 
+export const { updtaeNodeState } = layoutSlice.actions;
 export default layoutSlice.reducer;

@@ -3,6 +3,7 @@ import ReactFlow, {
 	Background,
 	Connection,
 	Controls,
+	ReactFlowInstance,
 	addEdge,
 	useEdgesState,
 	useNodesState,
@@ -10,13 +11,9 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 
 import SymptomNodeInit from "./SymptomNodeInit";
-import dagre from "@dagrejs/dagre";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { getLayoutedElements } from "../utils/layout";
-import { initialNodes, initialEdges, proccedNodes } from "./constants";
-
-const dagreGraph = new dagre.graphlib.Graph();
-dagreGraph.setDefaultEdgeLabel(() => ({}));
+import { createEdges } from "../utils/nodesAndEdges";
 
 const nodeTypes = {
 	symptomNode: SymptomNodeInit,
@@ -25,6 +22,8 @@ const nodeTypes = {
 function Workflow() {
 	const nodeState = useSelector((state: any) => state.layoutState.nodes);
 	const edgeState = useSelector((state: any) => state.layoutState.edges);
+	const [reactFlowInstance, setReactFlowInstance] =
+		React.useState<ReactFlowInstance<any, any> | null>(null);
 
 	const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
 		nodeState,
@@ -35,26 +34,30 @@ function Workflow() {
 	const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
 
 	useEffect(() => {
-		console.log("nodes", nodes);
-	}, []);
+		const newEdges = createEdges(nodeState);
+		const { nodes: layoutedNodes, edges: _layoutedEdges } = getLayoutedElements(
+			nodeState,
+			newEdges
+		);
 
-	const onConnect = useCallback((con: Connection) => {
-		const edge = {
-			...con,
-			id: `${con.source}-${con.target}`,
-			animated: true,
-		};
-		setEdges((es) => addEdge(edge, es));
-	}, []);
+		setNodes(layoutedNodes);
+		setEdges(newEdges);
+		setTimeout(() => {
+			reactFlowInstance?.fitView({
+				duration: 1000,
+				includeHiddenNodes: true,
+			});
+		}, 500);
+	}, [nodeState]);
 
 	return (
 		<div className="w-full h-full">
 			<ReactFlow
+				onInit={(instance) => setReactFlowInstance(instance)}
 				nodes={nodes}
 				edges={edges}
 				onNodesChange={onNodesChange}
 				onEdgesChange={onEdgesChange}
-				onConnect={onConnect}
 				fitView
 				nodeTypes={nodeTypes}>
 				<Background

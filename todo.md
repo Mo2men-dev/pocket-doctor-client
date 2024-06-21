@@ -1,2 +1,4 @@
 - [x] get the first node to display
-- [ ] display nodes in a layout
+- [x] display nodes in a layout
+- [x] nodes can be added dymaically
+- [x] canvas auto fits view when nodes are added
