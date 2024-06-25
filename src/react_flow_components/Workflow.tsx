@@ -8,18 +8,21 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css";
 
-import SymptomNodeInit from "./SymptomNodeInit";
+import SymptomNode from "./SymptomNode";
 import { useSelector } from "react-redux";
 import { getLayoutedElements } from "../utils/layout";
 import { createEdges } from "../utils/nodesAndEdges";
+import InitSymptomNode from "./InitSymptomNode";
 
 const nodeTypes = {
-	symptomNode: SymptomNodeInit,
+	symptomNode: SymptomNode,
+	initSymptomNode: InitSymptomNode,
 };
 
 function Workflow() {
 	const nodeState = useSelector((state: any) => state.layoutState.nodes);
 	const edgeState = useSelector((state: any) => state.layoutState.edges);
+
 	const [reactFlowInstance, setReactFlowInstance] =
 		React.useState<ReactFlowInstance<any, any> | null>(null);
 
@@ -47,6 +50,7 @@ function Workflow() {
 				padding: 0.1,
 			});
 		}, 100);
+		// console.log(nodeState);
 	}, [nodeState]);
 
 	return (
@@ -57,6 +61,7 @@ function Workflow() {
 				edges={edges}
 				onNodesChange={onNodesChange}
 				onEdgesChange={onEdgesChange}
+				zoomOnScroll={false}
 				fitView
 				nodeTypes={nodeTypes}>
 				<Background

@@ -1,8 +1,10 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import layoutSlice from "./nodes/slice";
+import symptomsSlice from "./symptoms/slice";
 
 const appReducer = combineReducers({
 	layoutState: layoutSlice,
+	symptomState: symptomsSlice,
 });
 
 const rootReducer = (state: any, action: any) => {

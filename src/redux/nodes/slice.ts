@@ -17,11 +17,15 @@ const layoutSlice = createSlice({
 		edges: initialEdges,
 	},
 	reducers: {
-		updtaeNodeState: (state, action) => {
+		setNodeState: (state, action) => {
+			state.nodes = action.payload;
+		},
+
+		updateNodeState: (state, action) => {
 			state.nodes = [...state.nodes, action.payload];
 		},
 	},
 });
 
-export const { updtaeNodeState } = layoutSlice.actions;
+export const { updateNodeState, setNodeState } = layoutSlice.actions;
 export default layoutSlice.reducer;
