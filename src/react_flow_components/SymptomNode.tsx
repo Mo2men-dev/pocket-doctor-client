@@ -4,12 +4,16 @@ import { Handle, Position } from "reactflow";
 import { useDispatch, useSelector } from "react-redux";
 import { generateRandomSymptoms } from "../utils/generate";
 import { addSymptom } from "../redux/symptoms/slice";
+import { capitalizeFirstLetter } from "../utils/utils";
 
 function SymptomNode({
 	data: { symptom, parentID },
 }: NodeProps<{ symptom: string; parentID: string }>) {
 	const totalSymptoms = useSelector(
 		(state: any) => state.symptomState.totalSymptoms
+	);
+	const selectedSymptoms = useSelector(
+		(state: any) => state.symptomState.selectedSymptoms
 	);
 
 	const dispatch = useDispatch();
@@ -21,8 +25,7 @@ function SymptomNode({
 
 		// add the clicked symptom to the selectedSymptoms array
 		dispatch(addSymptom(symptom));
-
-		generateRandomSymptoms(totalSymptoms, 5, pId, dispatch);
+		generateRandomSymptoms(totalSymptoms, selectedSymptoms, pId, dispatch);
 	};
 
 	return (
@@ -36,7 +39,7 @@ function SymptomNode({
 			<div
 				className="bg-blue-500 text-white rounded-sm p-2 shadow-lg cursor-pointer text-sm"
 				onClick={handleOnClick}>
-				{symptom}
+				{capitalizeFirstLetter(symptom)}
 			</div>
 			<Handle
 				type="source"

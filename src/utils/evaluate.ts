@@ -1,5 +1,3 @@
-import { capitalizeFirstLetter } from "./utils";
-
 // function that compares two string arrays and returns a percentage of similarity
 // between the two arrays.
 export function evaluate(arr1: string[], arr2: string[]): number {
@@ -35,7 +33,7 @@ export const generateSymptoms = (conditions: any[]) => {
 	for (let i = 0; i < conditions.length; i++) {
 		if (conditions[i].flag === true) {
 			const symptoms = conditions[i].symptoms.map((symptom: string) => {
-				return capitalizeFirstLetter(symptom);
+				return symptom;
 			});
 			output = output.concat(symptoms);
 		}

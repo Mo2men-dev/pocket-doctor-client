@@ -15,15 +15,16 @@ export const generateRandomId = (length: number) => {
 
 export const generateRandomSymptoms = (
 	totalSymptoms: string[],
-	n: number,
+	selectedSymptoms: string[],
 	pId: string,
 	dispatch: Dispatch<UnknownAction>
 ) => {
-	const rn = Math.floor(Math.random() * totalSymptoms.length);
-	const slice = totalSymptoms.slice(rn, rn + n);
+	const noReapeat = totalSymptoms.filter(
+		(symptom) => !selectedSymptoms.includes(symptom)
+	);
 	const pID = pId;
 
-	slice.forEach((symptom: any) => {
+	noReapeat.forEach((symptom: any) => {
 		const id = generateRandomId(5);
 		dispatch(
 			updateNodeState({

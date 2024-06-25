@@ -16,7 +16,7 @@ const symptomsSlice = createSlice({
 	} as SymptomInitState,
 	reducers: {
 		addSymptom: (state, action) => {
-			state.selectedSymptoms.push(action.payload);
+			state.selectedSymptoms.push(action.payload.toUpperCase());
 		},
 
 		resetSymptoms: (state) => {

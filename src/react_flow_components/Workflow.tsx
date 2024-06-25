@@ -50,7 +50,6 @@ function Workflow() {
 				padding: 0.1,
 			});
 		}, 100);
-		// console.log(nodeState);
 	}, [nodeState]);
 
 	return (

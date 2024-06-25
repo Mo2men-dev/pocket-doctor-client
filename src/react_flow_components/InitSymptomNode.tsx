@@ -1,13 +1,18 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Handle, Position } from "reactflow";
-import { addSymptom } from "../redux/symptoms/slice";
+import { addSymptom, setSymptoms } from "../redux/symptoms/slice";
 import { setNodeState } from "../redux/nodes/slice";
 import { generateRandomId, generateRandomSymptoms } from "../utils/generate";
+import { evaluateConditions, generateSymptoms } from "../utils/evaluate";
+import { capitalizeFirstLetter, removeDuplicates } from "../utils/utils";
 
 function InitSymptomNode() {
 	const totalSymptoms = useSelector(
 		(state: any) => state.symptomState.totalSymptoms
+	);
+	const totalConditions = useSelector(
+		(state: any) => state.conditionState.conditions
 	);
 
 	const [symptom, setSymptom] = React.useState("");
@@ -38,6 +43,26 @@ function InitSymptomNode() {
 		}
 	};
 
+	const handleSubmit = () => {
+		const rootId = generateRandomId(5);
+		const s = symptom.toUpperCase();
+		dispatch(addSymptom(symptom));
+		dispatch(
+			setNodeState([
+				{
+					id: rootId,
+					type: "symptomNode",
+					data: { symptom: symptom, parentID: rootId },
+					position: { x: 0, y: 0 },
+				},
+			])
+		);
+		const filteredSymptoms = evaluateConditions(totalConditions, [s]);
+		const symptoms = removeDuplicates(generateSymptoms(filteredSymptoms));
+		dispatch(setSymptoms(symptoms));
+		generateRandomSymptoms(symptoms, [s], rootId, dispatch);
+	};
+
 	return (
 		<>
 			<div className="p-1 bg-blue-500 rounded-sm shadow-lg">
@@ -64,11 +89,11 @@ function InitSymptomNode() {
 										<div
 											className="text-black p-1 cursor-pointer text-xs"
 											onClick={() => {
-												setSymptom(s);
+												setSymptom(capitalizeFirstLetter(s));
 												setInputFocused(false);
 												parentRef.current?.focus();
 											}}>
-											{s}
+											{capitalizeFirstLetter(s)}
 										</div>
 										<hr />
 									</div>
@@ -90,19 +115,7 @@ function InitSymptomNode() {
 				className="absolute cursor-grab"
 				onKeyDown={(e) => {
 					if (e.key === "Enter") {
-						const rootId = generateRandomId(5);
-						dispatch(addSymptom(symptom));
-						dispatch(
-							setNodeState([
-								{
-									id: rootId,
-									type: "symptomNode",
-									data: { symptom: symptom, parentID: rootId },
-									position: { x: 0, y: 0 },
-								},
-							])
-						);
-						generateRandomSymptoms(totalSymptoms, 5, rootId, dispatch);
+						handleSubmit();
 					}
 				}}
 				ref={parentRef}></button>
