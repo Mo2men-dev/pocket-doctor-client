@@ -7,8 +7,8 @@ import { addSymptom, setSymptoms } from "../redux/symptoms/slice";
 import { capitalizeFirstLetter } from "../utils/utils";
 
 function SymptomNode({
-	data: { symptom, parentID },
-}: NodeProps<{ symptom: string; parentID: string }>) {
+	data: { symptom, parentID, clickable },
+}: NodeProps<{ symptom: string; parentID: string; clickable: boolean }>) {
 	const totalSymptoms = useSelector(
 		(state: any) => state.symptomState.totalSymptoms
 	);
@@ -16,6 +16,8 @@ function SymptomNode({
 	const dispatch = useDispatch();
 
 	const handleOnClick = () => {
+		if (!clickable) return;
+
 		// remove the clicked symptom from the totalSymptoms array
 		const noReapeat = totalSymptoms.filter(
 			(s: string) => s !== symptom.toUpperCase()

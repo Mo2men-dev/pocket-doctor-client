@@ -5,7 +5,9 @@
 - [x] BUG - Dublicate prarentId breaking the tree
 - [x] BUG - Dublicate nodeId breaking the tree
 - [x] take the initial input from the user and display first group of possible related symptoms
-- [ ] BUG - the selected symptoms are stored in the state but the filtering is delayed by one click
+- [x] BUG - the selected symptoms are stored in the state but the filtering is delayed by one click
+- [x] BUG - dont allow user to select the same symptom twice
+- [x] BUG - dont allow user to select more than 1 symptom at a time
 - [ ] Finding a matching condition detection
   - Solution #1:
     1. Array of all selected symptoms so far

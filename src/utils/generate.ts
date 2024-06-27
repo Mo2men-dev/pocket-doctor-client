@@ -26,7 +26,7 @@ export const generateRandomSymptoms = (
 			updateNodeState({
 				id: id,
 				type: "symptomNode",
-				data: { symptom, parentID: id },
+				data: { symptom, parentID: id, clickable: true },
 				position: { x: 0, y: 0 },
 				parentId: pID,
 			})

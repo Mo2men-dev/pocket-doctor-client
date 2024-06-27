@@ -9,10 +9,11 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 
 import SymptomNode from "./SymptomNode";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getLayoutedElements } from "../utils/layout";
 import { createEdges } from "../utils/nodesAndEdges";
 import InitSymptomNode from "./InitSymptomNode";
+import { setNodeState } from "../redux/nodes/slice";
 
 const nodeTypes = {
 	symptomNode: SymptomNode,
@@ -34,10 +35,21 @@ function Workflow() {
 		edgeState
 	);
 
+	const dispatch = useDispatch();
+
 	const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
 	const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
 
 	useEffect(() => {
+		// make all current nodes unclickable
+		const newNodes = nodeState.map((node: any) => {
+			return {
+				...node,
+				data: { ...node.data, clickable: false },
+			};
+		});
+		dispatch(setNodeState(newNodes));
+
 		const newEdges = createEdges(nodeState);
 		const { nodes: layoutedNodes, edges: _layoutedEdges } = getLayoutedElements(
 			nodeState,
@@ -53,8 +65,7 @@ function Workflow() {
 				padding: 0.1,
 			});
 		}, 100);
-		console.log(selectedSymptoms);
-	}, [nodeState]);
+	}, [selectedSymptoms]);
 
 	return (
 		<div className="w-full h-full">

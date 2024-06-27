@@ -52,7 +52,7 @@ function InitSymptomNode() {
 				{
 					id: rootId,
 					type: "symptomNode",
-					data: { symptom: symptom, parentID: rootId },
+					data: { symptom: symptom, parentID: rootId, clickable: false },
 					position: { x: 0, y: 0 },
 				},
 			])
