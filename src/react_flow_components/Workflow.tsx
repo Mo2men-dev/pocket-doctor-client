@@ -22,6 +22,9 @@ const nodeTypes = {
 function Workflow() {
 	const nodeState = useSelector((state: any) => state.layoutState.nodes);
 	const edgeState = useSelector((state: any) => state.layoutState.edges);
+	const selectedSymptoms = useSelector(
+		(state: any) => state.symptomState.selectedSymptoms
+	);
 
 	const [reactFlowInstance, setReactFlowInstance] =
 		React.useState<ReactFlowInstance<any, any> | null>(null);
@@ -50,6 +53,7 @@ function Workflow() {
 				padding: 0.1,
 			});
 		}, 100);
+		console.log(selectedSymptoms);
 	}, [nodeState]);
 
 	return (

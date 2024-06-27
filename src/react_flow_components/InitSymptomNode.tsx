@@ -45,7 +45,7 @@ function InitSymptomNode() {
 
 	const handleSubmit = () => {
 		const rootId = generateRandomId(5);
-		const s = symptom.toUpperCase();
+		const symptomUpperCase = symptom.toUpperCase();
 		dispatch(addSymptom(symptom));
 		dispatch(
 			setNodeState([
@@ -57,10 +57,13 @@ function InitSymptomNode() {
 				},
 			])
 		);
-		const filteredSymptoms = evaluateConditions(totalConditions, [s]);
+		const filteredSymptoms = evaluateConditions(totalConditions, [
+			symptomUpperCase,
+		]);
 		const symptoms = removeDuplicates(generateSymptoms(filteredSymptoms));
-		dispatch(setSymptoms(symptoms));
-		generateRandomSymptoms(symptoms, [s], rootId, dispatch);
+		const noReapeat = symptoms.filter((s: string) => s !== symptomUpperCase);
+		dispatch(setSymptoms(noReapeat));
+		generateRandomSymptoms(noReapeat, rootId, dispatch);
 	};
 
 	return (

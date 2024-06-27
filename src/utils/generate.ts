@@ -14,14 +14,10 @@ export const generateRandomId = (length: number) => {
 };
 
 export const generateRandomSymptoms = (
-	totalSymptoms: string[],
-	selectedSymptoms: string[],
+	noReapeat: string[],
 	pId: string,
 	dispatch: Dispatch<UnknownAction>
 ) => {
-	const noReapeat = totalSymptoms.filter(
-		(symptom) => !selectedSymptoms.includes(symptom)
-	);
 	const pID = pId;
 
 	noReapeat.forEach((symptom: any) => {

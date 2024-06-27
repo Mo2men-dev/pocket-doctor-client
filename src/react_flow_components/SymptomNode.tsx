@@ -3,7 +3,7 @@ import { NodeProps } from "reactflow";
 import { Handle, Position } from "reactflow";
 import { useDispatch, useSelector } from "react-redux";
 import { generateRandomSymptoms } from "../utils/generate";
-import { addSymptom } from "../redux/symptoms/slice";
+import { addSymptom, setSymptoms } from "../redux/symptoms/slice";
 import { capitalizeFirstLetter } from "../utils/utils";
 
 function SymptomNode({
@@ -12,20 +12,23 @@ function SymptomNode({
 	const totalSymptoms = useSelector(
 		(state: any) => state.symptomState.totalSymptoms
 	);
-	const selectedSymptoms = useSelector(
-		(state: any) => state.symptomState.selectedSymptoms
-	);
 
 	const dispatch = useDispatch();
 
 	const handleOnClick = () => {
+		// remove the clicked symptom from the totalSymptoms array
+		const noReapeat = totalSymptoms.filter(
+			(s: string) => s !== symptom.toUpperCase()
+		);
+		dispatch(setSymptoms(noReapeat));
+
 		// this will be the parentId for the this symptom child nodes
 		// that will be generated when this symptom is clicked
 		const pId = parentID;
 
 		// add the clicked symptom to the selectedSymptoms array
 		dispatch(addSymptom(symptom));
-		generateRandomSymptoms(totalSymptoms, selectedSymptoms, pId, dispatch);
+		generateRandomSymptoms(noReapeat, pId, dispatch);
 	};
 
 	return (
