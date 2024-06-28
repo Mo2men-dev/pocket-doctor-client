@@ -7,7 +7,7 @@ export function evaluate(arr1: string[], arr2: string[]): number {
 			count++;
 		}
 	}
-	return (count / arr1.length) * 100;
+	return Math.ceil((count / arr1.length) * 100);
 }
 
 // function that evaluates the conditions based on the selected symptoms

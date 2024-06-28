@@ -6,6 +6,7 @@ import { setNodeState } from "../redux/nodes/slice";
 import { generateRandomId, generateRandomSymptoms } from "../utils/generate";
 import { evaluateConditions, generateSymptoms } from "../utils/evaluate";
 import { capitalizeFirstLetter, removeDuplicates } from "../utils/utils";
+import { setConditions } from "../redux/conditions/slice";
 
 function InitSymptomNode() {
 	const totalSymptoms = useSelector(
@@ -46,7 +47,6 @@ function InitSymptomNode() {
 	const handleSubmit = () => {
 		const rootId = generateRandomId(5);
 		const symptomUpperCase = symptom.toUpperCase();
-		dispatch(addSymptom(symptom));
 		dispatch(
 			setNodeState([
 				{
@@ -57,12 +57,24 @@ function InitSymptomNode() {
 				},
 			])
 		);
-		const filteredSymptoms = evaluateConditions(totalConditions, [
+
+		const filteredConditions = evaluateConditions(totalConditions, [
 			symptomUpperCase,
 		]);
-		const symptoms = removeDuplicates(generateSymptoms(filteredSymptoms));
+		const noZeroSimilarity = filteredConditions.filter(
+			(condition: any) => condition.similarity !== 0
+		);
+		const evaluatedConditions = evaluateConditions(noZeroSimilarity, [
+			symptomUpperCase,
+		]);
+		dispatch(setConditions(evaluatedConditions));
+
+		const symptoms = removeDuplicates(generateSymptoms(noZeroSimilarity));
 		const noReapeat = symptoms.filter((s: string) => s !== symptomUpperCase);
+
 		dispatch(setSymptoms(noReapeat));
+		dispatch(addSymptom(symptom));
+
 		generateRandomSymptoms(noReapeat, rootId, dispatch);
 	};
 

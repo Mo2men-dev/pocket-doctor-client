@@ -6,7 +6,7 @@ export const createEdges = (rootNode: Node[]): Edge[] => {
 	rootNode.forEach((node) => {
 		if (node.id !== "Init") {
 			out.push({
-				id: `${node.id}-Init`,
+				id: `${node.id}-${node.parentId}`,
 				source: node.parentId!,
 				target: node.id,
 				animated: true,

@@ -13,11 +13,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { getLayoutedElements } from "../utils/layout";
 import { createEdges } from "../utils/nodesAndEdges";
 import InitSymptomNode from "./InitSymptomNode";
-import { setNodeState } from "../redux/nodes/slice";
+import { setEdgeState, setNodeState } from "../redux/nodes/slice";
+import ConditionNode from "./ConditionNode";
+import { setMatchFound } from "../redux/conditions/slice";
+import { generatePath } from "../utils/generate";
 
 const nodeTypes = {
 	symptomNode: SymptomNode,
 	initSymptomNode: InitSymptomNode,
+	conditionNode: ConditionNode,
 };
 
 function Workflow() {
@@ -25,6 +29,12 @@ function Workflow() {
 	const edgeState = useSelector((state: any) => state.layoutState.edges);
 	const selectedSymptoms = useSelector(
 		(state: any) => state.symptomState.selectedSymptoms
+	);
+	const matchFound = useSelector(
+		(state: any) => state.conditionState.matchFound
+	);
+	const totalsymptoms = useSelector(
+		(state: any) => state.symptomState.totalSymptoms
 	);
 
 	const [reactFlowInstance, setReactFlowInstance] =
@@ -41,6 +51,7 @@ function Workflow() {
 	const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
 
 	useEffect(() => {
+		let newEdges;
 		// make all current nodes unclickable
 		const newNodes = nodeState.map((node: any) => {
 			return {
@@ -50,7 +61,41 @@ function Workflow() {
 		});
 		dispatch(setNodeState(newNodes));
 
-		const newEdges = createEdges(nodeState);
+		if (!matchFound) {
+			newEdges = createEdges(nodeState);
+		} else {
+			const path = generatePath(nodeState);
+			let index = 0;
+			newEdges = edgeState.map((edge: any) => {
+				if (path.path.includes(edge.id)) {
+					return {
+						...edge,
+						animated: false,
+						style: { stroke: "#0FFF50" },
+					};
+				} else {
+					return {
+						...edge,
+						animated: true,
+					};
+				}
+			});
+
+			const interval = setInterval(() => {
+				reactFlowInstance?.fitView({
+					duration: 1000,
+					includeHiddenNodes: true,
+					padding: 0.1,
+					nodes: [{ id: path.nodesOnPath[index] }],
+				});
+				index++;
+
+				if (index >= path.nodesOnPath.length) {
+					clearInterval(interval);
+				}
+			}, 1000);
+		}
+
 		const { nodes: layoutedNodes, edges: _layoutedEdges } = getLayoutedElements(
 			nodeState,
 			newEdges
@@ -58,14 +103,22 @@ function Workflow() {
 
 		setNodes(layoutedNodes);
 		setEdges(newEdges);
-		setTimeout(() => {
-			reactFlowInstance?.fitView({
-				duration: 1000,
-				includeHiddenNodes: true,
-				padding: 0.1,
-			});
-		}, 100);
-	}, [selectedSymptoms]);
+
+		if (!matchFound) {
+			setTimeout(() => {
+				reactFlowInstance?.fitView({
+					duration: 1000,
+					includeHiddenNodes: true,
+					padding: 0.1,
+				});
+			}, 100);
+		}
+
+		if (totalsymptoms.length === 1) {
+			dispatch(setMatchFound(true));
+			dispatch(setEdgeState(newEdges));
+		}
+	}, [selectedSymptoms, matchFound]);
 
 	return (
 		<div className="w-full h-full">

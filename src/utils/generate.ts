@@ -19,17 +19,40 @@ export const generateRandomSymptoms = (
 	dispatch: Dispatch<UnknownAction>
 ) => {
 	const pID = pId;
+	let output: any[] = [];
 
 	noReapeat.forEach((symptom: any) => {
 		const id = generateRandomId(5);
-		dispatch(
-			updateNodeState({
-				id: id,
-				type: "symptomNode",
-				data: { symptom, parentID: id, clickable: true },
-				position: { x: 0, y: 0 },
-				parentId: pID,
-			})
-		);
+		let node = {
+			id: id,
+			type: "symptomNode",
+			data: { symptom, parentID: id, clickable: true },
+			position: { x: 0, y: 0 },
+			parentId: pID,
+		};
+		dispatch(updateNodeState(node));
+		output.push(node);
 	});
+
+	return output;
+};
+
+export const generatePath = (nodes: any[]) => {
+	let path = [];
+	let nodesOnPath = [];
+	let currId = "conditionNode";
+	let currParentId = nodes.find((node) => node.id === currId).parentId;
+	nodesOnPath.push(currId);
+
+	while (currParentId) {
+		path.push(`${currId}-${currParentId}`);
+		currId = currParentId;
+		currParentId = nodes.find((node) => node.id === currId).parentId;
+
+		nodesOnPath.push(currId);
+	}
+
+	nodesOnPath = nodesOnPath.reverse();
+
+	return { path, nodesOnPath };
 };
