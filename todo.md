@@ -8,7 +8,7 @@
 - [x] BUG - the selected symptoms are stored in the state but the filtering is delayed by one click
 - [x] BUG - dont allow user to select the same symptom twice
 - [x] BUG - dont allow user to select more than 1 symptom at a time
-- [ ] Finding a matching condition detection
-  - Solution #1:
-    1. Array of all selected symptoms so far
-    2. Compare that array to the array of symptoms of that condition
+- [x] Finding a matching condition detection
+- [x] UI - display the matching condition
+- [x] UI - animation after finding the mathcing condition
+- [x] UI - user instructions

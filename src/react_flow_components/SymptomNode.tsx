@@ -89,8 +89,6 @@ function SymptomNode({
 				className="bg-blue-500 text-white rounded-sm p-2 shadow-lg cursor-pointer text-sm"
 				onClick={handleOnClick}>
 				{capitalizeFirstLetter(symptom)}
-				<br />
-				{parentID}
 			</div>
 			<Handle
 				type="source"

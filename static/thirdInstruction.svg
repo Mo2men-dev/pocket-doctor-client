@@ -1,0 +1,21 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 43.101240624152126" width="320" height="43.101240624152126" filter="invert(93%) hue-rotate(180deg)">
+  <!-- svg-source:excalidraw -->
+  
+  <defs>
+    <style class="style-fonts">
+      @font-face {
+        font-family: "Virgil";
+        src: url("https://excalidraw.com/Virgil.woff2");
+      }
+      @font-face {
+        font-family: "Cascadia";
+        src: url("https://excalidraw.com/Cascadia.woff2");
+      }
+      @font-face {
+        font-family: "Assistant";
+        src: url("https://excalidraw.com/Assistant-Regular.woff2");
+      }
+    </style>
+    
+  </defs>
+  <g transform="translate(10 13.101240624152126) rotate(0 110.31993103027344 10)"><text x="0" y="14.016" font-family="Virgil, Segoe UI Emoji" font-size="16px" fill="#1971c2" text-anchor="start" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">select a symtom and press </text></g><g stroke-linecap="round"><g transform="translate(90 33.101240624152126) rotate(0 110 0)"><path d="M0 0 C66.97 0, 133.94 0, 220 0 M0 0 C81.39 0, 162.79 0, 220 0" stroke="#1971c2" stroke-width="1" fill="none"></path></g><g transform="translate(90 33.101240624152126) rotate(0 110 0)"><path d="M196.51 8.55 C203.66 5.95, 210.81 3.34, 220 0 M196.51 8.55 C205.2 5.39, 213.89 2.22, 220 0" stroke="#1971c2" stroke-width="1" fill="none"></path></g><g transform="translate(90 33.101240624152126) rotate(0 110 0)"><path d="M196.51 -8.55 C203.66 -5.95, 210.81 -3.34, 220 0 M196.51 -8.55 C205.2 -5.39, 213.89 -2.22, 220 0" stroke="#1971c2" stroke-width="1" fill="none"></path></g></g><mask></mask><g transform="translate(231.19445917567862 12.508328964785221) rotate(0 15.155230711473052 7.2918486969686)"><text x="0" y="11.667205600227799" font-family="Helvetica, Segoe UI Emoji" font-size="12.68147599472802px" fill="#f08c00" text-anchor="start" style="white-space: pre;" direction="ltr" dominant-baseline="alphabetic">Enter</text></g><g stroke-linecap="round" transform="translate(230.14103956238546 10) rotate(0 25.031925274943887 8.82894041043616)"><path d="M0 0 C13.34 0.63, 25.31 0.48, 50.06 0 M0 0 C15.4 0.22, 29.81 -0.01, 50.06 0 M50.06 0 C49.46 3.78, 50.75 7.54, 50.06 17.66 M50.06 0 C49.65 6.52, 50.08 12.58, 50.06 17.66 M50.06 17.66 C34.7 17.78, 19.79 17.8, 0 17.66 M50.06 17.66 C31.57 17.23, 13.26 17.21, 0 17.66 M0 17.66 C0.04 11.77, -0.37 6.85, 0 0 M0 17.66 C-0.35 13.62, -0.09 8.96, 0 0" stroke="#f08c00" stroke-width="1" fill="none"></path></g><g stroke-linecap="round"><g transform="translate(281.20489011227323 16.198722680173034) rotate(0 0 0)"><path d="M0 0 C0 0, 0 0, 0 0 M0 0 C0 0, 0 0, 0 0" stroke="#f08c00" stroke-width="1" fill="none"></path></g><g transform="translate(281.20489011227323 16.198722680173034) rotate(0 0 0)"><path d="MNaN NaN CNaN NaN, NaN NaN, 0 0 MNaN NaN CNaN NaN, NaN NaN, 0 0" stroke="#f08c00" stroke-width="1" fill="none"></path></g><g transform="translate(281.20489011227323 16.198722680173034) rotate(0 0 0)"><path d="MNaN NaN CNaN NaN, NaN NaN, 0 0 MNaN NaN CNaN NaN, NaN NaN, 0 0" stroke="#f08c00" stroke-width="1" fill="none"></path></g></g><mask></mask></svg>

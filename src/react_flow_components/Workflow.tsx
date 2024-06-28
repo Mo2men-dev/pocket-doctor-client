@@ -36,9 +36,14 @@ function Workflow() {
 	const totalsymptoms = useSelector(
 		(state: any) => state.symptomState.totalSymptoms
 	);
+	const displayTitle = useSelector((state: any) => state.uiState.displayTitle);
+	const displayInstructions = useSelector(
+		(state: any) => state.uiState.displayInstructions
+	);
 
 	const [reactFlowInstance, setReactFlowInstance] =
 		React.useState<ReactFlowInstance<any, any> | null>(null);
+	const [showInfo, setShowInfo] = React.useState(false);
 
 	const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
 		nodeState,
@@ -65,7 +70,7 @@ function Workflow() {
 			newEdges = createEdges(nodeState);
 		} else {
 			const path = generatePath(nodeState);
-			let index = 0;
+			let index = 1;
 			newEdges = edgeState.map((edge: any) => {
 				if (path.path.includes(edge.id)) {
 					return {
@@ -81,9 +86,18 @@ function Workflow() {
 				}
 			});
 
-			const interval = setInterval(() => {
+			setTimeout(() => {
 				reactFlowInstance?.fitView({
 					duration: 1000,
+					includeHiddenNodes: true,
+					padding: 0.1,
+					nodes: [{ id: path.nodesOnPath[0] }],
+				});
+			}, 100);
+
+			const interval = setInterval(() => {
+				reactFlowInstance?.fitView({
+					duration: 1500,
 					includeHiddenNodes: true,
 					padding: 0.1,
 					nodes: [{ id: path.nodesOnPath[index] }],
@@ -93,7 +107,7 @@ function Workflow() {
 				if (index >= path.nodesOnPath.length) {
 					clearInterval(interval);
 				}
-			}, 1000);
+			}, 1500);
 		}
 
 		const { nodes: layoutedNodes, edges: _layoutedEdges } = getLayoutedElements(
@@ -121,7 +135,34 @@ function Workflow() {
 	}, [selectedSymptoms, matchFound]);
 
 	return (
-		<div className="w-full h-full">
+		<div className="w-full h-full ">
+			<div className="absolute w-full h-full">
+				<div className="w-full h-1/2 flex">
+					<div className="w-3/5 h-full flex justify-end items-end py-10">
+						{displayTitle && (
+							<div className="">
+								<object data="../../static/title.svg"></object>
+							</div>
+						)}
+					</div>
+					<div className="h-full w-2/5 flex items-end">
+						{displayInstructions && (
+							<div className="px-5">
+								<object data="../../static/arrow.svg"></object>
+							</div>
+						)}
+					</div>
+				</div>
+				<div className="w-full h-1/2 flex">
+					<div className="w-2/5 h-1/3 flex justify-end items-center">
+						{displayInstructions && (
+							<div className="mr-10 -rotate-3">
+								<object data="../../static/thirdInstruction.svg"></object>
+							</div>
+						)}
+					</div>
+				</div>
+			</div>
 			<ReactFlow
 				onInit={(instance) => setReactFlowInstance(instance)}
 				nodes={nodes}
@@ -137,6 +178,26 @@ function Workflow() {
 				/>
 				<Controls />
 			</ReactFlow>
+			{displayTitle && (
+				<div className="absolute bottom-0 right-0 flex justify-end items-end p-5">
+					<div className="flex justify-center items-center">
+						<div
+							onMouseEnter={() => setShowInfo(true)}
+							onMouseLeave={() => setShowInfo(false)}
+							className="font-mono bg-red-600 rounded-circle text-sm w-6 h-6 flex justify-center items-center bg-opacity-50 text-orange-400 cursor-pointer">
+							i
+						</div>
+						{showInfo && (
+							<div
+								className="absolute right-full bg-red-600 py-1 px-2 rounded-md text-sm text-nowrap
+                            ">
+								This project is not intended to serve as a substitute for
+								professional medical advice from a licensed physician.
+							</div>
+						)}
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }

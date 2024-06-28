@@ -7,6 +7,7 @@ import { generateRandomId, generateRandomSymptoms } from "../utils/generate";
 import { evaluateConditions, generateSymptoms } from "../utils/evaluate";
 import { capitalizeFirstLetter, removeDuplicates } from "../utils/utils";
 import { setConditions } from "../redux/conditions/slice";
+import { setDisplayInstructions, setDisplayTitle } from "../redux/ui/slice";
 
 function InitSymptomNode() {
 	const totalSymptoms = useSelector(
@@ -74,6 +75,9 @@ function InitSymptomNode() {
 
 		dispatch(setSymptoms(noReapeat));
 		dispatch(addSymptom(symptom));
+		dispatch(setDisplayTitle(false));
+		dispatch(setDisplayInstructions(false));
+		dispatch(setDisplayInstructions(false));
 
 		generateRandomSymptoms(noReapeat, rootId, dispatch);
 	};
@@ -94,7 +98,13 @@ function InitSymptomNode() {
 						onChange={(e) => handleOnChange(e)}
 						maxLength={20}
 						placeholder="Enter symptom"
-						onFocus={handleFocus}
+						onFocus={() => {
+							handleFocus();
+							dispatch(setDisplayInstructions(true));
+						}}
+						onBlur={() => {
+							dispatch(setDisplayInstructions(true));
+						}}
 					/>
 					{inputFocused && filteredSymptoms.length > 0 ? (
 						<div className="w-full absolute bg-white rounded-sm max-h-20 z-50 shadow-lg mt-2 p-1 overflow-y-scroll">
@@ -106,6 +116,7 @@ function InitSymptomNode() {
 											onClick={() => {
 												setSymptom(capitalizeFirstLetter(s));
 												setInputFocused(false);
+
 												parentRef.current?.focus();
 											}}>
 											{capitalizeFirstLetter(s)}
