@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { sampleConditions } from "../../react_flow_components/constants";
 
 const conditionSlice = createSlice({
 	name: "conditionState",
 	initialState: {
-		conditions: [],
+		conditions: sampleConditions,
 		matchFound: false,
 	},
 	reducers: {
