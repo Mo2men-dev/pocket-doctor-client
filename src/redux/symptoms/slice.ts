@@ -1,7 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { generateSymptoms } from "../../utils/evaluate";
-import { sampleConditions } from "../../react_flow_components/constants";
-import { removeDuplicates } from "../../utils/utils";
 
 export interface SymptomInitState {
 	totalSymptoms: string[];
@@ -11,7 +8,7 @@ export interface SymptomInitState {
 const symptomsSlice = createSlice({
 	name: "symptoms",
 	initialState: {
-		totalSymptoms: removeDuplicates(generateSymptoms(sampleConditions)),
+		totalSymptoms: [],
 		selectedSymptoms: [],
 	} as SymptomInitState,
 	reducers: {
