@@ -141,14 +141,14 @@ function Workflow() {
 					<div className="w-3/5 h-full flex justify-end items-end py-10">
 						{displayTitle && (
 							<div className="">
-								<object data="../../static/title.svg"></object>
+								<object data="/title.svg"></object>
 							</div>
 						)}
 					</div>
 					<div className="h-full w-2/5 flex items-end">
 						{displayInstructions && (
 							<div className="px-5">
-								<object data="../../static/arrow.svg"></object>
+								<object data="/arrow.svg"></object>
 							</div>
 						)}
 					</div>
@@ -157,7 +157,7 @@ function Workflow() {
 					<div className="w-2/5 h-1/3 flex justify-end items-center">
 						{displayInstructions && (
 							<div className="mr-10 -rotate-3">
-								<object data="../../static/thirdInstruction.svg"></object>
+								<object data="/thirdInstruction.svg"></object>
 							</div>
 						)}
 					</div>
