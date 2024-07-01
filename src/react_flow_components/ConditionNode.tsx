@@ -11,7 +11,7 @@ function ConditionNode({ data: { condition } }: NodeProps<{ condition: any }>) {
 				className="bg-blue-500"
 				id="a"
 			/>
-			<div className="bg-white rounded-sm p-1 shadow-lg min-w-96 max-w-[800px]">
+			<div className="bg-white rounded-sm p-1 shadow-lg min-w-96 max-w-[800px] cursor-default">
 				<div className="bg-blue-500 p-2 rounded-sm shadow-lg">
 					<div className="flex w-full justify-between items-center">
 						<h1 className="text-2xl font-bold ">{condition.name}</h1>
@@ -47,6 +47,16 @@ function ConditionNode({ data: { condition } }: NodeProps<{ condition: any }>) {
 						</div>
 					</div>
 				</div>
+			</div>
+			<div className="w-full mt-1 text-xs flex justify-end">
+				<button
+					className="p-1 bg-black rounded-sm"
+					onClick={() => {
+						// for now just reload the page
+						window.location.reload();
+					}}>
+					Reset
+				</button>
 			</div>
 			<Handle
 				type="source"
