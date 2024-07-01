@@ -19,6 +19,7 @@ function InitSymptomNode() {
 	const displayInstructions = useSelector(
 		(state: any) => state.uiState.displayInstructions
 	);
+	const displayTitle = useSelector((state: any) => state.uiState.displayTitle);
 
 	const [symptom, setSymptom] = React.useState("");
 	const [filteredSymptoms, setFilteredSymptoms] = React.useState(totalSymptoms);
@@ -92,7 +93,7 @@ function InitSymptomNode() {
 	return (
 		<div className="relative">
 			{displayInstructions && (
-				<div className="hidden bg-green-400 p-1 rounded-sm bg-opacity-60 absolute z-30 top-[-300%] text-[6px] font-semibold max-sm:block">
+				<div className="hidden bg-green-400 p-1 rounded-sm bg-opacity-60 absolute z-30 top-[-300%] text-[6px] font-semibold max-sm:block animate-fade-in">
 					<span className="underline">How to use:</span>
 					<div className="p-1 flex flex-col">
 						<span>1. Type the symptom you are experiencing.</span>
@@ -113,6 +114,13 @@ function InitSymptomNode() {
 				/>
 
 				<div className="w-fit relative">
+					{displayTitle && (
+						<div className="absolute top-[-170%] left-[5%]">
+							<object
+								data="/title.svg"
+								className="w-32"></object>
+						</div>
+					)}
 					<input
 						className="text-black rounded-sm p-1 shadow-xl text-sm max-lg:w-36 max-md:w-32"
 						value={symptom}

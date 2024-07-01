@@ -133,12 +133,6 @@ function Workflow() {
 
 	return (
 		<div className="relative w-full h-full flex justify-center">
-			{displayTitle && (
-				<div className="absolute top-[30%]">
-					<object data="/title.svg"></object>
-				</div>
-			)}
-
 			<ReactFlow
 				onInit={(instance) => setReactFlowInstance(instance)}
 				nodes={nodes}
