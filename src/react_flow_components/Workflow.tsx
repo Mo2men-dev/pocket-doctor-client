@@ -135,34 +135,13 @@ function Workflow() {
 	}, [selectedSymptoms, matchFound]);
 
 	return (
-		<div className="w-full h-full ">
-			<div className="absolute w-full h-full">
-				<div className="w-full h-1/2 flex">
-					<div className="w-3/5 h-full flex justify-end items-end py-10">
-						{displayTitle && (
-							<div className="">
-								<object data="/title.svg"></object>
-							</div>
-						)}
-					</div>
-					<div className="h-full w-2/5 flex items-end">
-						{displayInstructions && (
-							<div className="px-5">
-								<object data="/arrow.svg"></object>
-							</div>
-						)}
-					</div>
+		<div className="relative w-full h-full flex justify-center">
+			{displayTitle && (
+				<div className="absolute top-[30%]">
+					<object data="/title.svg"></object>
 				</div>
-				<div className="w-full h-1/2 flex">
-					<div className="w-2/5 h-1/3 flex justify-end items-center">
-						{displayInstructions && (
-							<div className="mr-10 -rotate-3">
-								<object data="/thirdInstruction.svg"></object>
-							</div>
-						)}
-					</div>
-				</div>
-			</div>
+			)}
+
 			<ReactFlow
 				onInit={(instance) => setReactFlowInstance(instance)}
 				nodes={nodes}

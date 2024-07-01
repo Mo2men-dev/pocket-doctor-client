@@ -11,12 +11,12 @@ function ConditionNode({ data: { condition } }: NodeProps<{ condition: any }>) {
 				className="bg-blue-500"
 				id="a"
 			/>
-			<div className="bg-white rounded-sm p-1 shadow-lg max-w-96">
+			<div className="bg-white rounded-sm p-1 shadow-lg min-w-96 max-w-[800px]">
 				<div className="bg-blue-500 p-2 rounded-sm shadow-lg">
 					<div className="flex w-full justify-between items-center">
-						<h1 className="text-2xl font-bold text-black">{condition.name}</h1>
-						<div className="text-sm">
-							similarity: <span className="font-bold text-black">100%</span>
+						<h1 className="text-2xl font-bold ">{condition.name}</h1>
+						<div className="text-sm text-black">
+							similarity: <span className="font-bold text-white">100%</span>
 						</div>
 					</div>
 					<hr className="bg-white my-1" />

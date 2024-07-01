@@ -16,10 +16,14 @@ function InitSymptomNode() {
 	const totalConditions = useSelector(
 		(state: any) => state.conditionState.conditions
 	);
+	const displayInstructions = useSelector(
+		(state: any) => state.uiState.displayInstructions
+	);
 
 	const [symptom, setSymptom] = React.useState("");
 	const [filteredSymptoms, setFilteredSymptoms] = React.useState(totalSymptoms);
 	const [inputFocused, setInputFocused] = React.useState(false);
+	const [disableEnter, setDisableEnter] = React.useState(true);
 	const parentRef = React.useRef<HTMLButtonElement>(null);
 
 	const dispatch = useDispatch();
@@ -31,6 +35,9 @@ function InitSymptomNode() {
 			return s.toLowerCase().includes(value.toLowerCase());
 		});
 		setFilteredSymptoms(filtered);
+
+		setDisableEnter(true);
+		parentRef.current?.blur();
 	};
 
 	const handleFocus = () => {
@@ -83,17 +90,31 @@ function InitSymptomNode() {
 	};
 
 	return (
-		<>
-			<div className="p-1 bg-blue-500 rounded-sm shadow-lg">
+		<div className="relative">
+			{displayInstructions && (
+				<div className="hidden bg-green-400 p-1 rounded-sm bg-opacity-60 absolute z-30 top-[-300%] text-[6px] font-semibold max-sm:block">
+					<span className="underline">How to use:</span>
+					<div className="p-1 flex flex-col">
+						<span>1. Type the symptom you are experiencing.</span>
+						<span>2. Select a symptom.</span>
+						<span>
+							3. Press <span className="text-black">Enter</span>
+						</span>
+					</div>
+				</div>
+			)}
+
+			<div className="p-1 bg-blue-500 rounded-sm shadow-lg relative">
 				<Handle
 					type="target"
 					position={Position.Left}
 					className="bg-blue-500"
 					id="a"
 				/>
+
 				<div className="w-fit relative">
 					<input
-						className="text-black rounded-sm p-1 shadow-xl text-sm"
+						className="text-black rounded-sm p-1 shadow-xl text-sm max-lg:w-36 max-md:w-32"
 						value={symptom}
 						onChange={(e) => handleOnChange(e)}
 						maxLength={20}
@@ -106,6 +127,15 @@ function InitSymptomNode() {
 							dispatch(setDisplayInstructions(true));
 						}}
 					/>
+
+					{displayInstructions && (
+						<div className="absolute top-[-90%] left-full max-sm:hidden">
+							<object
+								data="/arrow.svg"
+								className="w-20"></object>
+						</div>
+					)}
+
 					{inputFocused && filteredSymptoms.length > 0 ? (
 						<div className="w-full absolute bg-white rounded-sm max-h-20 z-50 shadow-lg mt-2 p-1 overflow-y-scroll">
 							{filteredSymptoms.map((s: string) => {
@@ -116,6 +146,7 @@ function InitSymptomNode() {
 											onClick={() => {
 												setSymptom(capitalizeFirstLetter(s));
 												setInputFocused(false);
+												setDisableEnter(false);
 
 												parentRef.current?.focus();
 											}}>
@@ -128,6 +159,14 @@ function InitSymptomNode() {
 						</div>
 					) : (
 						<></>
+					)}
+
+					{displayInstructions && (
+						<div className="absolute -rotate-3 top-10 right-full">
+							<object
+								data="/thirdInstruction.svg"
+								className="w-40 max-lg:w-28 max-md:w-24 max-sm:hidden"></object>
+						</div>
 					)}
 				</div>
 				<Handle
@@ -145,7 +184,17 @@ function InitSymptomNode() {
 					}
 				}}
 				ref={parentRef}></button>
-		</>
+			{displayInstructions && (
+				<div className="absolute w-full flex justify-center top-[350%]">
+					<button
+						onClick={() => handleSubmit()}
+						disabled={disableEnter}
+						className="hidden bg-black text-white py-1 px-2 rounded-sm absolute z-30 text-[6px] font-semibold max-sm:block">
+						Enter
+					</button>
+				</div>
+			)}
+		</div>
 	);
 }
 

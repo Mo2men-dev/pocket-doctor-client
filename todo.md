@@ -12,5 +12,6 @@
 - [x] UI - display the matching condition
 - [x] UI - animation after finding the mathcing condition
 - [x] UI - user instructions
+- [x] UI - responsive design and better user experience
 - [x] Change state management to use real data from the server
 - [ ] Populate the db with more data
