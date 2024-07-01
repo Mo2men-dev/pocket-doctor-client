@@ -37,9 +37,6 @@ function Workflow() {
 		(state: any) => state.symptomState.totalSymptoms
 	);
 	const displayTitle = useSelector((state: any) => state.uiState.displayTitle);
-	const displayInstructions = useSelector(
-		(state: any) => state.uiState.displayInstructions
-	);
 
 	const [reactFlowInstance, setReactFlowInstance] =
 		React.useState<ReactFlowInstance<any, any> | null>(null);
