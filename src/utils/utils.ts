@@ -12,7 +12,7 @@ export function setUpConditions(conditions: any[]) {
 		return {
 			name: condition.condition.name,
 			symptoms: condition.symptoms.map((symptom: any) => {
-				return symptom.name;
+				return symptom;
 			}),
 			description: condition.condition.description,
 			flag: true,
