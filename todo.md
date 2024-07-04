@@ -14,4 +14,5 @@
 - [x] UI - user instructions
 - [x] UI - responsive design and better user experience
 - [x] Change state management to use real data from the server
-- [ ] Populate the db with more data
+- [x] Populate the db with more data
+- [x] BUG - drag on mobile prevented the user from scrolling

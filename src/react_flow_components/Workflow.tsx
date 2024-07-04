@@ -139,7 +139,7 @@ function Workflow() {
 				edges={edges}
 				onNodesChange={onNodesChange}
 				onEdgesChange={onEdgesChange}
-				panOnDrag={false}
+				panOnDrag={selectedSymptoms.length === 0 ? false : true}
 				zoomOnScroll={false}
 				fitView
 				nodeTypes={nodeTypes}>
