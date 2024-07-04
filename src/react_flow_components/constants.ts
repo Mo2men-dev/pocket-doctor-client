@@ -8,6 +8,7 @@ export const initialNodes: Node[] = [
 		type: "initSymptomNode",
 		data: {},
 		position: { x: 0, y: 0 },
+		draggable: false,
 	},
 ];
 
