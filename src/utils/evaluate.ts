@@ -1,4 +1,4 @@
-import { Condition } from "../types/data";
+import { ConditionType } from "../types/data";
 
 /**
  * Function that compares two string arrays and returns a percentage of similarity between the two arrays.
@@ -34,9 +34,9 @@ export function evaluate(arr1: string[], arr2: string[]): number {
  * ```
  */
 export function evaluateConditions(
-	conditions: Condition[],
+	conditions: ConditionType[],
 	selectedSymptoms: string[]
-): Condition[] {
+): ConditionType[] {
 	const result = conditions.map((condition) => {
 		let similarity = evaluate(condition.symptoms!, selectedSymptoms);
 		return {
@@ -62,7 +62,7 @@ export function evaluateConditions(
  * generateSymptoms(conditions);
  * ```
  */
-export const generateSymptoms = (conditions: Condition[]): string[] => {
+export const generateSymptoms = (conditions: ConditionType[]): string[] => {
 	let output: string[] = [];
 	for (let i = 0; i < conditions.length; i++) {
 		if (conditions[i].flag === true) {
