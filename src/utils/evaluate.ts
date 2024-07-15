@@ -1,3 +1,5 @@
+import { Condition } from "../types/data";
+
 /**
  * Function that compares two string arrays and returns a percentage of similarity between the two arrays.
  * @param arr1 an array of strings.
@@ -32,11 +34,11 @@ export function evaluate(arr1: string[], arr2: string[]): number {
  * ```
  */
 export function evaluateConditions(
-	conditions: any[],
+	conditions: Condition[],
 	selectedSymptoms: string[]
-) {
+): Condition[] {
 	const result = conditions.map((condition) => {
-		let similarity = evaluate(condition.symptoms, selectedSymptoms);
+		let similarity = evaluate(condition.symptoms!, selectedSymptoms);
 		return {
 			...condition,
 			similarity: similarity,
@@ -60,11 +62,11 @@ export function evaluateConditions(
  * generateSymptoms(conditions);
  * ```
  */
-export const generateSymptoms = (conditions: any[]) => {
-	let output: any[] = [];
+export const generateSymptoms = (conditions: Condition[]): string[] => {
+	let output: string[] = [];
 	for (let i = 0; i < conditions.length; i++) {
 		if (conditions[i].flag === true) {
-			const symptoms = conditions[i].symptoms.map((symptom: string) => {
+			const symptoms = conditions[i].symptoms!.map((symptom: string) => {
 				return symptom;
 			});
 			output = output.concat(symptoms);

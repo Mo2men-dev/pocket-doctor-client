@@ -2,7 +2,7 @@ import React from "react";
 import { NodeProps } from "reactflow";
 import { Handle, Position } from "reactflow";
 import { useDispatch, useSelector } from "react-redux";
-import { generateRandomSymptoms } from "../utils/generate";
+import { generateSymptomsNodes } from "../utils/generate";
 import { addSymptom, setSymptoms } from "../redux/symptoms/slice";
 import { capitalizeFirstLetter, removeDuplicates } from "../utils/utils";
 import { setConditions } from "../redux/conditions/slice";
@@ -61,7 +61,7 @@ function SymptomNode({
 
 		// add the clicked symptom to the selectedSymptoms array
 		dispatch(addSymptom(symptom));
-		const newNodes = generateRandomSymptoms(newSymptoms, pId, dispatch);
+		const newNodes = generateSymptomsNodes(newSymptoms, pId, dispatch);
 
 		if (newSymptoms.length === 1) {
 			const lastNodeId = newNodes[0].id;

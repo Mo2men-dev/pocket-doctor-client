@@ -1,3 +1,5 @@
+import { Condition } from "../types/data";
+
 /**
  * Capitalizes the first letter of a string.
  * @param string the string to capitalize.
@@ -37,7 +39,12 @@ export function removeDuplicates(arr: any[]): any[] {
  * setUpConditions(conditions);
  * ```
  */
-export function setUpConditions(conditions: any[]) {
+export function setUpConditions(
+	conditions: Array<{
+		condition: Condition;
+		symptoms: string[];
+	}>
+) {
 	const formattedConditions = conditions.map((condition) => {
 		return {
 			name: condition.condition.name,
