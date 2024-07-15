@@ -1,8 +1,22 @@
+/**
+ * This file contains the functions that are used to generate the nodes for the symptoms based on the selected symptoms,
+ * generate the path from the initial node to the condition node, and generate ids for the nodes.
+ */
+
 import { UnknownAction } from "@reduxjs/toolkit";
 import { Dispatch } from "react";
 import { updateNodeState } from "../redux/nodes/slice";
 
-export const generateRandomId = (length: number) => {
+/**
+ * Function that generates a random id this will be used to generate a unique id for each node.
+ * @param length the length of the id to be generated.
+ * @returns a random id.
+ * @example
+ * ```ts
+ * generateRandomId(5);
+ * ```
+ */
+export const generateRandomId = (length: number): string => {
 	const characters =
 		"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 	const charactersLength = characters.length;
@@ -13,7 +27,17 @@ export const generateRandomId = (length: number) => {
 	return result;
 };
 
-// function that generates the nodes for the symptoms based on the selected symptoms
+/**
+ * Function that generates the nodes for the symptoms based on the selected symptoms
+ * @param noReapeat an array of strings.
+ * @param pId the parent id of the nodes.
+ * @param dispatch the dispatch function from the redux store.
+ * @returns an array of nodes.
+ * @example
+ * ```ts
+ * generateSymptomsNodes(noReapeat, pId, dispatch);
+ * ```
+ */
 export const generateSymptomsNodes = (
 	noReapeat: string[],
 	pId: string,
@@ -38,22 +62,47 @@ export const generateSymptomsNodes = (
 	return output;
 };
 
+/**
+ * Function that finds the path from the initial node to the condition node
+ * this will be used to highlight the path from the initial node to the condition node.
+ * @param nodes an array of nodes.
+ * @returns an object with the path and the nodesOnPath array.
+ * @example
+ * ```ts
+ * generatePath(nodes);
+ * ```
+ */
 export const generatePath = (nodes: any[]) => {
 	let path = [];
 	let nodesOnPath = [];
 	let currId = "conditionNode";
+
+	// the current parent id is the parent id of the current node in the loop
 	let currParentId = nodes.find((node) => node.id === currId).parentId;
+
+	// add the current node to the nodesOnPath array
 	nodesOnPath.push(currId);
 
+	// loop through the nodes array to find the path from the initial node to the condition node
+	// the loop goes backwards from the condition node to the initial node
+	// the loop stops when the current parent id is undefined
 	while (currParentId) {
+		// push the current id and the current parent id to the path array
 		path.push(`${currId}-${currParentId}`);
+
+		// set the current id to the current parent id
 		currId = currParentId;
+
+		// set the current parent id to the parent id of the current node
 		currParentId = nodes.find((node) => node.id === currId).parentId;
 
+		// add the current node to the nodesOnPath array
 		nodesOnPath.push(currId);
 	}
 
+	// reverse the path array to get the path from the initial node to the condition node
 	nodesOnPath = nodesOnPath.reverse();
 
+	// return the path and the nodesOnPath array
 	return { path, nodesOnPath };
 };

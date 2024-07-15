@@ -1,5 +1,15 @@
 import { Node, Edge } from "reactflow";
 
+/**
+ * Creates edges between nodes.
+ * @param rootNode an array of nodes.
+ * @returns an array of edges.
+ *
+ * @example
+ * ```ts
+ * createEdges(rootNode);
+ * ```
+ */
 export const createEdges = (rootNode: Node[]): Edge[] => {
 	let out: Edge[] = [];
 

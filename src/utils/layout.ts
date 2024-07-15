@@ -5,6 +5,18 @@ dagreGraph.setDefaultEdgeLabel(() => ({}));
 const nodeWidth = 15;
 const nodeHeight = 10;
 
+/**
+ * This function takes in nodes and edges and returns the layouted elements
+ * @param nodes an array of nodes.
+ * @param edges an array of edges.
+ * @param direction the direction of the layout.
+ * @returns an object with the layouted nodes and edges.
+ *
+ * @example
+ * ```ts
+ * getLayoutedElements(nodes, edges, direction);
+ * ```
+ */
 export const getLayoutedElements = (
 	nodes: any[],
 	edges: any[],
