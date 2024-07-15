@@ -1,4 +1,4 @@
-export interface Condition {
+export interface ConditionType {
 	id?: string;
 	name: string;
 	description: string;

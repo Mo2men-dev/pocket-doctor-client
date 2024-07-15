@@ -1,4 +1,4 @@
-import { Condition } from "../types/data";
+import { ConditionType } from "../types/data";
 
 /**
  * Capitalizes the first letter of a string.
@@ -41,7 +41,7 @@ export function removeDuplicates(arr: any[]): any[] {
  */
 export function setUpConditions(
 	conditions: Array<{
-		condition: Condition;
+		condition: ConditionType;
 		symptoms: string[];
 	}>
 ) {
