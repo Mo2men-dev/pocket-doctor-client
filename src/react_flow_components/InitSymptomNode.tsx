@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Handle, Position } from "reactflow";
 import { addSymptom, setSymptoms } from "../redux/symptoms/slice";
 import { setNodeState } from "../redux/nodes/slice";
-import { generateRandomId, generateRandomSymptoms } from "../utils/generate";
+import { generateRandomId, generateSymptomsNodes } from "../utils/generate";
 import { evaluateConditions, generateSymptoms } from "../utils/evaluate";
 import { capitalizeFirstLetter, removeDuplicates } from "../utils/utils";
 import { setConditions } from "../redux/conditions/slice";
@@ -67,27 +67,50 @@ function InitSymptomNode() {
 			])
 		);
 
+		// first evaluation of conditions based on the first symptom
+		// and the conditions fetched from the API call.
+		// this will return an array of conditions ordered by the percentage of similarity.
 		const filteredConditions = evaluateConditions(totalConditions, [
 			symptomUpperCase,
 		]);
+
+		// remove conditions with 0% similarity to the selected symptom.
+		// this will return an array of conditions with a similarity greater than 0.
+		// this will be used to know which conditions to display their symptoms.
 		const noZeroSimilarity = filteredConditions.filter(
 			(condition: any) => condition.similarity !== 0
 		);
+
+		// evaluate the conditions with more than 0% similarity to the selected symptom.
+		// this will return an array of conditions ordered by the percentage of similarity.
+		// this will be used to set the conditions in the redux store.
 		const evaluatedConditions = evaluateConditions(noZeroSimilarity, [
 			symptomUpperCase,
 		]);
+
+		// set the conditions in the redux store.
 		dispatch(setConditions(evaluatedConditions));
 
+		// remove duplicates from the generated symptoms.
+		// this will return an array of strings (symptoms) without duplicates.
 		const symptoms = removeDuplicates(generateSymptoms(noZeroSimilarity));
+
+		// remove the selected symptom from the symptoms array.
 		const noReapeat = symptoms.filter((s: string) => s !== symptomUpperCase);
 
+		// set the total symptoms in the redux store to the symptoms without duplicates and the selected symptom.
 		dispatch(setSymptoms(noReapeat));
+
+		// add the selected symptom to the redux store.
 		dispatch(addSymptom(symptom));
+
+		// set the display instructions and title to false.
 		dispatch(setDisplayTitle(false));
 		dispatch(setDisplayInstructions(false));
 		dispatch(setDisplayInstructions(false));
 
-		generateRandomSymptoms(noReapeat, rootId, dispatch);
+		// generate the next nodes to be displayed based on the total symptoms without duplicates and the selected symptom.
+		generateSymptomsNodes(noReapeat, rootId, dispatch);
 	};
 
 	return (
@@ -121,6 +144,7 @@ function InitSymptomNode() {
 								className="w-32"></object>
 						</div>
 					)}
+
 					<input
 						className="text-black rounded-sm p-1 shadow-xl text-sm max-lg:w-36 max-md:w-32"
 						value={symptom}
@@ -184,6 +208,7 @@ function InitSymptomNode() {
 					id="b"
 				/>
 			</div>
+
 			<button
 				className="absolute cursor-grab"
 				onKeyDown={(e) => {
@@ -192,6 +217,7 @@ function InitSymptomNode() {
 					}
 				}}
 				ref={parentRef}></button>
+
 			{displayInstructions && (
 				<div className="absolute w-full flex justify-center top-[350%]">
 					<button

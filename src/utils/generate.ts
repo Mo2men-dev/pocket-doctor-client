@@ -13,7 +13,8 @@ export const generateRandomId = (length: number) => {
 	return result;
 };
 
-export const generateRandomSymptoms = (
+// function that generates the nodes for the symptoms based on the selected symptoms
+export const generateSymptomsNodes = (
 	noReapeat: string[],
 	pId: string,
 	dispatch: Dispatch<UnknownAction>
