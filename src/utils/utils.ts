@@ -47,6 +47,7 @@ export function setUpConditions(
 ) {
 	const formattedConditions = conditions.map((condition) => {
 		return {
+			id: condition.condition.id,
 			name: condition.condition.name,
 			symptoms: condition.symptoms.map((symptom: any) => {
 				return symptom;
