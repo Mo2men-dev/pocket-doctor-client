@@ -2,8 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ConditionType } from "../../types/data";
 import { fetchAllConditions } from "../../api/api";
+import { useSelector } from "react-redux";
+import Nav from "../../components/Nav";
 
 function Conditions() {
+    const displayTitle = useSelector((state: any) => state.uiState.displayTitle);
+
 	// get the condition name from the url
 	const [conditions, setConditions] = React.useState<
 		Array<{
@@ -20,6 +24,9 @@ function Conditions() {
 
 	return (
 		<div>
+            <div className="relative w-full h-16">
+                {displayTitle && ( <Nav/> )}
+            </div>
 			<header className="flex justify-center text-3xl p-2 text-blue-400">
 				<h1>Conditions</h1>
 			</header>

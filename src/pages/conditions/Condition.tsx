@@ -3,8 +3,12 @@ import { capitalizeFirstLetter } from "../../utils/utils";
 import { ConditionType } from "../../types/data";
 import { useParams } from "react-router-dom";
 import { fetchCondition } from "../../api/api";
+import Nav from "../../components/Nav";
+import { useSelector } from "react-redux";
 
 function Condition() {
+    const displayTitle = useSelector((state: any) => state.uiState.displayTitle);
+
 	const { id } = useParams<{ id: string }>();
 	const [condition, setCondition] = React.useState<{
 		condition: ConditionType;
@@ -19,6 +23,9 @@ function Condition() {
 
 	return (
 		<div>
+            <div className="relative w-full h-16">
+                {displayTitle && ( <Nav/> )}
+            </div>
 			<header className="flex justify-center text-3xl p-2 text-blue-400">
 				<h1>{condition?.condition.name}</h1>
 			</header>
