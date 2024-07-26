@@ -1,11 +1,8 @@
-/**
- * This file contains the functions that are used to generate the nodes for the symptoms based on the selected symptoms,
- * generate the path from the initial node to the condition node, and generate ids for the nodes.
- */
-
 import { UnknownAction } from "@reduxjs/toolkit";
 import { Dispatch } from "react";
 import { updateNodeState } from "../redux/nodes/slice";
+import { NodePathType } from "../types/data";
+import { Node, Edge } from "reactflow";
 
 /**
  * Function that generates a random id this will be used to generate a unique id for each node.
@@ -72,13 +69,13 @@ export const generateSymptomsNodes = (
  * generatePath(nodes);
  * ```
  */
-export const generatePath = (nodes: any[]) => {
+export const generatePath = (nodes: Node[]): NodePathType => {
 	let path = [];
 	let nodesOnPath = [];
 	let currId = "conditionNode";
 
 	// the current parent id is the parent id of the current node in the loop
-	let currParentId = nodes.find((node) => node.id === currId).parentId;
+	let currParentId = nodes.find((node) => node.id === currId)?.parentId;
 
 	// add the current node to the nodesOnPath array
 	nodesOnPath.push(currId);
@@ -94,7 +91,7 @@ export const generatePath = (nodes: any[]) => {
 		currId = currParentId;
 
 		// set the current parent id to the parent id of the current node
-		currParentId = nodes.find((node) => node.id === currId).parentId;
+		currParentId = nodes.find((node) => node.id === currId)?.parentId;
 
 		// add the current node to the nodesOnPath array
 		nodesOnPath.push(currId);
@@ -105,4 +102,30 @@ export const generatePath = (nodes: any[]) => {
 
 	// return the path and the nodesOnPath array
 	return { path, nodesOnPath };
+};
+
+/**
+ * Function that returns the either animated or non-animated edges based on the path.
+ * @param nodes an array of nodes.
+ * @param edges an array of edges.
+ * @returns an array of edges.
+ */
+export const generateEdgesForNodesOnPath = (nodes: Node[], edges: Edge[]) => {
+    const path = generatePath(nodes);
+    const newEdges = edges.map((edge: any) => {
+        if (path.path.includes(edge.id)) {
+            return {
+                ...edge,
+                animated: false,
+                style: { stroke: "#0FFF50" },
+            };
+        } else {
+            return {
+                ...edge,
+                animated: true,
+            };
+        }
+    });
+
+    return newEdges;
 };

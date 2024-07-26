@@ -1,22 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Edge, Node } from "reactflow";
 import {
 	initialEdges,
 	initialNodes,
 } from "../../react_flow_components/constants";
+import { LayoutStateType } from "../../types/state";
 
-export interface LayoutState {
-	nodes: Node[];
-	edges: Edge[];
-	selectedNodes: any[];
-}
 
 const layoutSlice = createSlice({
 	name: "layoutState",
 	initialState: {
 		nodes: initialNodes,
 		edges: initialEdges,
-	} as LayoutState,
+	} as LayoutStateType,
 	reducers: {
 		setNodeState: (state, action) => {
 			state.nodes = action.payload;

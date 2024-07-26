@@ -1,16 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-export interface UiInitState {
-	displayTitle: boolean;
-	displayInstructions: boolean;
-}
+import { UiStateType } from "../../types/state";
 
 const uiSlice = createSlice({
 	name: "ui",
 	initialState: {
 		displayTitle: true,
 		displayInstructions: false,
-	} as UiInitState,
+	} as UiStateType,
 	reducers: {
 		setDisplayTitle: (state, action) => {
 			state.displayTitle = action.payload;

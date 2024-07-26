@@ -1,16 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-export interface SymptomInitState {
-	totalSymptoms: string[];
-	selectedSymptoms: string[];
-}
+import { SymptomStateType } from "../../types/state";
 
 const symptomsSlice = createSlice({
 	name: "symptoms",
 	initialState: {
 		totalSymptoms: [],
 		selectedSymptoms: [],
-	} as SymptomInitState,
+	} as SymptomStateType,
 	reducers: {
 		addSymptom: (state, action) => {
 			state.selectedSymptoms.push(action.payload.toUpperCase());
