@@ -17,6 +17,7 @@ import { setEdgeState, setNodeState } from "../redux/nodes/slice";
 import ConditionNode from "./ConditionNode";
 import { setMatchFound } from "../redux/conditions/slice";
 import { generatePath } from "../utils/generate";
+import Disclaimer from "../components/Disclaimer";
 
 const nodeTypes = {
 	symptomNode: SymptomNode,
@@ -25,27 +26,18 @@ const nodeTypes = {
 };
 
 function Workflow() {
+
 	const nodeState = useSelector((state: any) => state.layoutState.nodes);
 	const edgeState = useSelector((state: any) => state.layoutState.edges);
-	const selectedSymptoms = useSelector(
-		(state: any) => state.symptomState.selectedSymptoms
-	);
-	const matchFound = useSelector(
-		(state: any) => state.conditionState.matchFound
-	);
-	const totalsymptoms = useSelector(
-		(state: any) => state.symptomState.totalSymptoms
-	);
+	const selectedSymptoms = useSelector((state: any) => state.symptomState.selectedSymptoms);
+	const matchFound = useSelector((state: any) => state.conditionState.matchFound);
+	const totalsymptoms = useSelector((state: any) => state.symptomState.totalSymptoms);
 	const displayTitle = useSelector((state: any) => state.uiState.displayTitle);
 
 	const [reactFlowInstance, setReactFlowInstance] =
 		React.useState<ReactFlowInstance<any, any> | null>(null);
-	const [showInfo, setShowInfo] = React.useState(false);
 
-	const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
-		nodeState,
-		edgeState
-	);
+	const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(nodeState, edgeState);
 
 	const dispatch = useDispatch();
 
@@ -149,26 +141,7 @@ function Workflow() {
 				/>
 				<Controls />
 			</ReactFlow>
-			{displayTitle && (
-				<div className="absolute bottom-0 right-0 flex justify-end items-end p-5">
-					<div className="flex justify-center items-center">
-						<div
-							onMouseEnter={() => setShowInfo(true)}
-							onMouseLeave={() => setShowInfo(false)}
-							className="font-mono bg-red-600 rounded-circle text-sm w-6 h-6 flex justify-center items-center bg-opacity-50 text-orange-400 cursor-pointer">
-							i
-						</div>
-						{showInfo && (
-							<div
-								className="absolute right-full bg-red-600 py-1 px-2 rounded-md text-sm text-nowrap
-                            ">
-								This project is not intended to serve as a substitute for
-								professional medical advice from a licensed physician.
-							</div>
-						)}
-					</div>
-				</div>
-			)}
+			{displayTitle && ( <Disclaimer /> )}
 		</div>
 	);
 }
