@@ -31,7 +31,7 @@ const nodeTypes = {
 
 function Workflow() {
 
-    const { nodeState, edgeState, selectedSymptoms, matchFound, displayTitle, totalsymptoms } = getState();
+    const { nodeState, edgeState, selectedSymptoms, matchFound, displayTitle, totalSymptoms } = getState();
 	const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance<any, any> | null>(null);
 	const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(nodeState, edgeState);
 	const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
@@ -66,7 +66,7 @@ function Workflow() {
 
         // if the total symptoms array has only one symptom, set match found to true
         // and set the edge state to the new edges
-		if (totalsymptoms.length === 1) {
+		if (totalSymptoms.length === 1) {
 			dispatch(setMatchFound(true));
 			dispatch(setEdgeState(newEdges));
 		}

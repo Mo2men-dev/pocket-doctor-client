@@ -1,31 +1,19 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Handle, Position } from "reactflow";
-import { addSymptom, setSymptoms } from "../redux/symptoms/slice";
-import { setNodeState } from "../redux/nodes/slice";
-import { generateRandomId, generateSymptomsNodes } from "../utils/generate";
-import { evaluateConditions, generateSymptoms } from "../utils/evaluate";
-import { capitalizeFirstLetter, removeDuplicates } from "../utils/utils";
-import { setConditions } from "../redux/conditions/slice";
-import { setDisplayInstructions, setDisplayTitle } from "../redux/ui/slice";
+import { capitalizeFirstLetter } from "../utils/utils";
+import { setDisplayInstructions } from "../redux/ui/slice";
+import { getState } from "../utils/state";
+import { init } from "../utils/init";
 
 function InitSymptomNode() {
-	const totalSymptoms = useSelector(
-		(state: any) => state.symptomState.totalSymptoms
-	);
-	const totalConditions = useSelector(
-		(state: any) => state.conditionState.conditions
-	);
-	const displayInstructions = useSelector(
-		(state: any) => state.uiState.displayInstructions
-	);
-	const displayTitle = useSelector((state: any) => state.uiState.displayTitle);
+    const { totalSymptoms, totalConditions, displayInstructions, displayTitle } = getState();
 
-	const [symptom, setSymptom] = React.useState("");
-	const [filteredSymptoms, setFilteredSymptoms] = React.useState(totalSymptoms);
-	const [inputFocused, setInputFocused] = React.useState(false);
-	const [disableEnter, setDisableEnter] = React.useState(true);
-	const parentRef = React.useRef<HTMLButtonElement>(null);
+	const [symptom, setSymptom] = useState("");
+	const [filteredSymptoms, setFilteredSymptoms] = useState(totalSymptoms);
+	const [inputFocused, setInputFocused] = useState(false);
+	const [disableEnter, setDisableEnter] = useState(true);
+	const parentRef = useRef<HTMLButtonElement>(null);
 
 	const dispatch = useDispatch();
 
@@ -54,63 +42,8 @@ function InitSymptomNode() {
 	};
 
 	const handleSubmit = () => {
-		const rootId = generateRandomId(5);
-		const symptomUpperCase = symptom.toUpperCase();
-		dispatch(
-			setNodeState([
-				{
-					id: rootId,
-					type: "symptomNode",
-					data: { symptom: symptom, parentID: rootId, clickable: false },
-					position: { x: 0, y: 0 },
-				},
-			])
-		);
-
-		// first evaluation of conditions based on the first symptom
-		// and the conditions fetched from the API call.
-		// this will return an array of conditions ordered by the percentage of similarity.
-		const filteredConditions = evaluateConditions(totalConditions, [
-			symptomUpperCase,
-		]);
-
-		// remove conditions with 0% similarity to the selected symptom.
-		// this will return an array of conditions with a similarity greater than 0.
-		// this will be used to know which conditions to display their symptoms.
-		const noZeroSimilarity = filteredConditions.filter(
-			(condition: any) => condition.similarity !== 0
-		);
-
-		// evaluate the conditions with more than 0% similarity to the selected symptom.
-		// this will return an array of conditions ordered by the percentage of similarity.
-		// this will be used to set the conditions in the redux store.
-		const evaluatedConditions = evaluateConditions(noZeroSimilarity, [
-			symptomUpperCase,
-		]);
-
-		// set the conditions in the redux store.
-		dispatch(setConditions(evaluatedConditions));
-
-		// remove duplicates from the generated symptoms.
-		// this will return an array of strings (symptoms) without duplicates.
-		const symptoms = removeDuplicates(generateSymptoms(noZeroSimilarity));
-
-		// remove the selected symptom from the symptoms array.
-		const noReapeat = symptoms.filter((s: string) => s !== symptomUpperCase);
-
-		// set the total symptoms in the redux store to the symptoms without duplicates and the selected symptom.
-		dispatch(setSymptoms(noReapeat));
-
-		// add the selected symptom to the redux store.
-		dispatch(addSymptom(symptom));
-
-		// set the display instructions and title to false.
-		dispatch(setDisplayTitle(false));
-		dispatch(setDisplayInstructions(false));
-		dispatch(setDisplayInstructions(false));
-
-		// generate the next nodes to be displayed based on the total symptoms without duplicates and the selected symptom.
-		generateSymptomsNodes(noReapeat, rootId, dispatch);
+        // initialize conditions, symptoms, display instructions and nodes.
+		init(totalConditions, symptom, dispatch);
 	};
 
 	return (

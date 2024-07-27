@@ -9,9 +9,11 @@ export function getState() {
 	const nodeState = useSelector((state: { layoutState: LayoutStateType }) => state.layoutState.nodes);
 	const edgeState = useSelector((state: { layoutState: LayoutStateType }) => state.layoutState.edges);
 	const selectedSymptoms = useSelector((state: { symptomState: SymptomStateType }) => state.symptomState.selectedSymptoms);
-	const totalsymptoms = useSelector((state: { symptomState: SymptomStateType }) => state.symptomState.totalSymptoms);
+	const totalSymptoms = useSelector((state: { symptomState: SymptomStateType }) => state.symptomState.totalSymptoms);
     const matchFound = useSelector((state: { conditionState: ConditionStateType }) => state.conditionState.matchFound);
 	const displayTitle = useSelector((state: { uiState: UiStateType }) => state.uiState.displayTitle);
+	const totalConditions = useSelector((state: { conditionState: ConditionStateType }) => state.conditionState.conditions);
+	const displayInstructions = useSelector((state: { uiState: UiStateType }) => state.uiState.displayInstructions);
 
-    return { nodeState, edgeState, selectedSymptoms, totalsymptoms, matchFound, displayTitle };
+    return { nodeState, edgeState, selectedSymptoms, totalSymptoms, matchFound, displayTitle, totalConditions, displayInstructions };
 }
