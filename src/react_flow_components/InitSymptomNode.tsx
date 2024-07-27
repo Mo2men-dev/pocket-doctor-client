@@ -5,6 +5,7 @@ import { capitalizeFirstLetter } from "../utils/utils";
 import { setDisplayInstructions } from "../redux/ui/slice";
 import { getState } from "../utils/state";
 import { init } from "../utils/init";
+import DisplaySVG from "../components/DisplaySVG";
 
 function InitSymptomNode() {
     const { totalSymptoms, totalConditions, displayInstructions, displayTitle } = getState();
@@ -72,10 +73,8 @@ function InitSymptomNode() {
 				<div className="w-fit relative">
 					{displayTitle && (
 						<div className="absolute top-[-170%] left-[5%]">
-							<object
-								data="/title.svg"
-								className="w-32"></object>
-						</div>
+							<DisplaySVG src="/title.svg" style="w-32"/>
+                        </div>
 					)}
 
 					<input
@@ -95,9 +94,7 @@ function InitSymptomNode() {
 
 					{displayInstructions && (
 						<div className="absolute top-[-90%] left-full max-sm:hidden">
-							<object
-								data="/arrow.svg"
-								className="w-20"></object>
+                            <DisplaySVG src="/arrow.svg" style="w-20" />
 						</div>
 					)}
 
@@ -128,12 +125,11 @@ function InitSymptomNode() {
 
 					{displayInstructions && (
 						<div className="absolute -rotate-3 top-10 right-full">
-							<object
-								data="/thirdInstruction.svg"
-								className="w-40 max-lg:w-28 max-md:w-24 max-sm:hidden"></object>
+                            <DisplaySVG src="/thirdInstruction.svg" style="w-40 max-lg:w-28 max-md:w-24 max-sm:hidden" />
 						</div>
 					)}
 				</div>
+
 				<Handle
 					type="source"
 					position={Position.Right}
@@ -144,12 +140,9 @@ function InitSymptomNode() {
 
 			<button
 				className="absolute cursor-grab"
-				onKeyDown={(e) => {
-					if (e.key === "Enter") {
-						handleSubmit();
-					}
-				}}
-				ref={parentRef}></button>
+				onKeyDown={ (e) => { if (e.key === "Enter") handleSubmit() } }
+				ref={parentRef}>    
+            </button>
 
 			{displayInstructions && (
 				<div className="absolute w-full flex justify-center top-[350%]">
