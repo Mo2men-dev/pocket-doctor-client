@@ -1,7 +1,7 @@
 export interface ConditionType {
 	id?: string;
 	name: string;
-	description: string;
+	description?: string;
 	symptoms?: string[];
 	similarity?: number;
 	flag?: boolean;

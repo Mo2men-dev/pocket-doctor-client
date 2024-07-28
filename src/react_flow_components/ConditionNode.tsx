@@ -1,27 +1,20 @@
 import React from "react";
 import { Handle, NodeProps, Position } from "reactflow";
 import { capitalizeFirstLetter, setUpConditions } from "../utils/utils";
-import { useSelector } from "react-redux";
 import { fetchAllConditions } from "../api/api";
 import { evaluateConditions } from "../utils/evaluate";
-import { Link } from "react-router-dom";
+import { getState } from "../utils/state";
+import SimilarConditions from "../components/SimilarConditions";
+import { ConditionType } from "../types/data";
 
 function ConditionNode({ data: { condition } }: NodeProps<{ condition: any }>) {
-	const selectedSymptoms = useSelector(
-		(state: any) => state.symptomState.selectedSymptoms
-	);
-
-	const [similarConditions, setSimilarConditions] = React.useState<
-		Array<{ id: string | undefined; name: string | undefined }>
-	>([]);
+	const { selectedSymptoms } = getState();
+	const [similarConditions, setSimilarConditions] = React.useState<ConditionType[]>([]);
 
 	React.useEffect(() => {
 		fetchAllConditions().then((data) => {
 			// get the top 5 similar conditions excluding the current condition
-			const topConditions = evaluateConditions(
-				setUpConditions(data),
-				selectedSymptoms
-			)
+			const topConditions = evaluateConditions(setUpConditions(data), selectedSymptoms)
 				.slice(1, 6)
 				.map((condition) => {
 					return {
@@ -88,29 +81,7 @@ function ConditionNode({ data: { condition } }: NodeProps<{ condition: any }>) {
 					</div>
 				</div>
 			</div>
-			<div className="absolute bg-white my-1 p-1 w-full rounded-sm">
-				<div className="bg-blue-500 p-2 rounded-sm">
-					<h1 className="text-white font-bold text-xl">
-						Other Possiable Conditions:{" "}
-						<span className="text-xs font-mono">(click for more info)</span>
-					</h1>
-					<hr />
-					<div className="w-fi">
-						{similarConditions.map((condition) => {
-							return (
-								<Link
-									className="w-fit"
-									to={`/conditions/${condition.id}`}
-									key={condition.id}>
-									<div className="text-sm underline mr-1 hover:text-black">
-										{condition.name}
-									</div>
-								</Link>
-							);
-						})}
-					</div>
-				</div>
-			</div>
+            <SimilarConditions similarConditions={similarConditions}/>
 			<Handle
 				type="source"
 				position={Position.Right}
