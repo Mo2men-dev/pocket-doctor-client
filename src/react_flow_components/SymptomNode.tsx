@@ -1,24 +1,19 @@
 import React from "react";
 import { NodeProps } from "reactflow";
 import { Handle, Position } from "reactflow";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { generateSymptomsNodes } from "../utils/generate";
 import { addSymptom, setSymptoms } from "../redux/symptoms/slice";
 import { capitalizeFirstLetter, removeDuplicates } from "../utils/utils";
 import { setConditions } from "../redux/conditions/slice";
 import { evaluateConditions, generateSymptoms } from "../utils/evaluate";
 import { addNode } from "../redux/nodes/slice";
+import { getState } from "../utils/state";
+import { ConditionType } from "../types/data";
 
-function SymptomNode({
-	data: { symptom, parentID, clickable },
-}: NodeProps<{ symptom: string; parentID: string; clickable: boolean }>) {
-	const totalConditions = useSelector(
-		(state: any) => state.conditionState.conditions
-	);
-	const selectedSymptoms = useSelector(
-		(state: any) => state.symptomState.selectedSymptoms
-	);
-
+function SymptomNode({data: { symptom, parentID, clickable }}: NodeProps<{ symptom: string; parentID: string; clickable: boolean }>) {
+	
+    const { totalConditions, selectedSymptoms } = getState();
 	const dispatch = useDispatch();
 
 	const handleOnClick = () => {
@@ -26,33 +21,18 @@ function SymptomNode({
 
 		const symptomUpperCase = symptom.toUpperCase();
 
-		const filteredConditions = evaluateConditions(totalConditions, [
-			symptomUpperCase,
-		]);
-		const noZeroSimilarity = filteredConditions.filter(
-			(condition: any) => condition.similarity !== 0
-		);
-
-		const evaluatedConditions = evaluateConditions(noZeroSimilarity, [
-			...selectedSymptoms,
-			symptomUpperCase,
-		]);
+		const filteredConditions = evaluateConditions(totalConditions, [symptomUpperCase]);
+		const noZeroSimilarity = filteredConditions.filter((condition: ConditionType) => condition.similarity !== 0);
+		const evaluatedConditions = evaluateConditions(noZeroSimilarity, [...selectedSymptoms, symptomUpperCase]);
 		dispatch(setConditions(evaluatedConditions));
 
-		const generatedSymptoms = removeDuplicates(
-			generateSymptoms(noZeroSimilarity)
-		);
+		const generatedSymptoms = removeDuplicates(generateSymptoms(noZeroSimilarity));
 
 		// remove the clicked symptom from the totalSymptoms array
-		const noReapeat = generatedSymptoms.filter(
-			(s: string) => s !== symptomUpperCase
-		);
+		const noReapeat = generatedSymptoms.filter((s: string) => s !== symptomUpperCase);
 
 		// remove selectedSymptoms from generatedSymptoms
-		const newSymptoms = noReapeat.filter(
-			(s: string) => !selectedSymptoms.includes(s)
-		);
-
+		const newSymptoms = noReapeat.filter((s: string) => !selectedSymptoms.includes(s));
 		dispatch(setSymptoms(newSymptoms));
 
 		// this will be the parentId for the this symptom child nodes
