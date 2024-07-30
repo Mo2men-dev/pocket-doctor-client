@@ -12,15 +12,6 @@ const appReducer = combineReducers({
 });
 
 const rootReducer = (state: any, action: any) => {
-	if (action.type === "reset") {
-		state = {
-			layoutState: {
-				nodes: [],
-				edges: [],
-			},
-		};
-	}
-
 	return appReducer(state, action);
 };
 

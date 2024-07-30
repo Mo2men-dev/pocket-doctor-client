@@ -17,7 +17,8 @@ function SimilarConditions({ similarConditions }: { similarConditions: Condition
                         <Link
                             className="w-fit"
                             to={`/conditions/${condition.id}`}
-                            key={condition.id}>
+                            key={condition.id}
+                            reloadDocument>
                             <div className="text-sm underline mr-1 hover:text-black">
                                 {condition.name}
                             </div>

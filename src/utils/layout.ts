@@ -51,7 +51,9 @@ export const getLayoutedElements = (
 			sourcePosition: string;
 			position: { x: number; y: number };
 		}) => {
-			let adjustYBy = NODE_HIGHT * (nodesCopy.length * 2);
+			
+            let adjustYBy = NODE_HIGHT * (nodesCopy.length * 2);
+            
 			const nodeWithPosition = dagreGraph.node(node.id);
 			node.targetPosition = isHorizontal ? "left" : "top";
 			node.sourcePosition = isHorizontal ? "right" : "bottom";
@@ -64,7 +66,6 @@ export const getLayoutedElements = (
 			};
 
 			adjustYBy -= NODE_HIGHT;
-
 			return node;
 		}
 	);
