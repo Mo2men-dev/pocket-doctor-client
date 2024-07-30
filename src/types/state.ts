@@ -19,4 +19,4 @@ export interface SymptomStateType {
 export interface UiStateType {
 	displayTitle: boolean;
 	displayInstructions: boolean;
-}
+};

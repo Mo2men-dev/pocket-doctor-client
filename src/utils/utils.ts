@@ -44,7 +44,7 @@ export function setUpConditions(
 		condition: ConditionType;
 		symptoms: string[];
 	}>
-) {
+): ConditionType[] {
 	const formattedConditions = conditions.map((condition) => {
 		return {
 			id: condition.condition.id,

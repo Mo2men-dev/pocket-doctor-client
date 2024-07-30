@@ -39,9 +39,9 @@ export const generateSymptomsNodes = (
 	noReapeat: string[],
 	pId: string,
 	dispatch: Dispatch<UnknownAction>
-) => {
+): Node[] => {
 	const pID = pId;
-	let output: any[] = [];
+	let output: Node[] = [];
 
 	noReapeat.forEach((symptom: any) => {
 		const id = generateRandomId(5);
@@ -110,7 +110,7 @@ export const generatePath = (nodes: Node[]): NodePathType => {
  * @param edges an array of edges.
  * @returns an array of edges.
  */
-export const generateEdgesForNodesOnPath = (nodes: Node[], edges: Edge[]) => {
+export const generateEdgesForNodesOnPath = (nodes: Node[], edges: Edge[]): Edge[] => {
     const path = generatePath(nodes);
     const newEdges = edges.map((edge: any) => {
         if (path.path.includes(edge.id)) {
