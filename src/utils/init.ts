@@ -1,12 +1,15 @@
+import { Dispatch } from "react";
+import { UnknownAction } from "@reduxjs/toolkit";
+
 import { ConditionType } from "../types/data";
+
 import { evaluateConditions, generateSymptoms } from "./evaluate";
 import { removeDuplicates } from "./utils";
+import { generateRandomId, generateSymptomsNodes } from "./generate";
+
 import { setConditions } from "../redux/conditions/slice";
-import { UnknownAction } from "@reduxjs/toolkit";
-import { Dispatch } from "react";
 import { addSymptom, setSymptoms } from "../redux/symptoms/slice";
 import { setDisplayTitle, setDisplayInstructions } from "../redux/ui/slice";
-import { generateRandomId, generateSymptomsNodes } from "./generate";
 import { setNodeState } from "../redux/nodes/slice";
 
 /**

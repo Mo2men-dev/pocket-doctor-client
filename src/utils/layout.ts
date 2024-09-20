@@ -1,10 +1,63 @@
 import dagre from "@dagrejs/dagre";
-import { Node } from "reactflow";
+import { Edge, Node, ReactFlowInstance } from "reactflow";
 import { NODE_WIDTH, NODE_HIGHT } from "../react_flow_components/constants";
+import { UnknownAction } from "@reduxjs/toolkit";
+import { Dispatch } from "react";
+import { setMatchFound } from "../redux/conditions/slice";
+import { setNodeState, setEdgeState } from "../redux/nodes/slice";
+import { playMatchFoundAnimation, zoomInOnNode } from "./animations";
+import { generateEdgesForNodesOnPath } from "./generate";
+import { createEdges } from "./nodesAndEdges";
 
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
 
+
+/**
+ * Function that updates the nodes and edges after a symptom is selected.
+ * 
+ * @param nodeState an array of nodes.
+ * @param edgeState an array of edges.
+ * @param matchFound a boolean that indicates if a match was found.
+ * @param reactFlowInstance the react flow instance.
+ * @param dispatch the dispatch function from the redux store.
+ * @param setNodes the setNodes function from the react flow instance.
+ * @param setEdges the setEdges function from the react flow instance.
+ * @param totalSymptoms an array of all the symptoms selected by the user.
+ * @returns void
+ */
+export function updateNodesAndEdges(
+    nodeState: Node[],
+    edgeState: Edge[],
+    matchFound: boolean,
+    reactFlowInstance: ReactFlowInstance<any, any> | null,
+    dispatch: Dispatch<UnknownAction>,
+    setNodes: any,
+    setEdges: any,
+    totalSymptoms: string[]
+) {
+    let newEdges;
+    const newNodes = makeNodesUnclickable(nodeState);
+    dispatch(setNodeState(newNodes));
+
+    if (!matchFound) {
+        newEdges = createEdges(nodeState);
+    } else {
+        newEdges = generateEdgesForNodesOnPath(nodeState, edgeState);
+        playMatchFoundAnimation(reactFlowInstance, nodeState);
+    }
+
+    const { nodes: layoutedNodes, edges: _layoutedEdges } = getLayoutedElements(nodeState, newEdges);
+    setNodes(layoutedNodes);
+    setEdges(newEdges);
+
+    if (!matchFound) zoomInOnNode(reactFlowInstance);
+
+    if (totalSymptoms.length === 1) {
+        dispatch(setMatchFound(true));
+        dispatch(setEdgeState(newEdges));
+    }
+}
 
 /**
  * This function takes in nodes and edges and returns the layouted elements
