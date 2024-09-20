@@ -1,8 +1,10 @@
-import { UnknownAction } from "@reduxjs/toolkit";
 import { Dispatch } from "react";
-import { updateNodeState } from "../redux/nodes/slice";
-import { NodePathType } from "../types/data";
+import { UnknownAction } from "@reduxjs/toolkit";
 import { Node, Edge } from "reactflow";
+import { updateNodeState } from "../redux/nodes/slice";
+import { ConditionType, NodePathType } from "../types/data";
+import { evaluateConditions, generateSymptoms } from "./evaluate";
+import { removeDuplicates } from "./utils";
 
 /**
  * Function that generates a random id this will be used to generate a unique id for each node.
@@ -128,4 +130,29 @@ export const generateEdgesForNodesOnPath = (nodes: Node[], edges: Edge[]): Edge[
     });
 
     return newEdges;
+};
+
+/**
+ * Function that generates conditions based on one symptom.
+ * @param symptomUpperCase the symptom to generate conditions for.
+ * @param totalConditions an array of conditions.
+ * @returns an array of conditions.
+ * @example
+ */
+export const generateFilteredConditions = (symptomUpperCase: string, totalConditions: ConditionType[] ) => {
+    const filteredConditions = evaluateConditions(totalConditions, [symptomUpperCase]);
+    return filteredConditions.filter((condition: ConditionType) => condition.similarity !== 0);
+};
+
+/**
+ * Function that generates new symptoms based on the selected symptoms.
+ * @param noZeroSimilarity an array of conditions.
+ * @param symptomUpperCase the symptom to generate new symptoms for.
+ * @param selectedSymptoms an array of selected symptoms.
+ * @returns an array of new symptoms.
+ */
+export const generateNewSymptoms = (noZeroSimilarity: ConditionType[], symptomUpperCase: string, selectedSymptoms: string[]) => {
+    const generatedSymptoms = removeDuplicates(generateSymptoms(noZeroSimilarity));
+    const noRepeat = generatedSymptoms.filter((s: string) => s !== symptomUpperCase);
+    return noRepeat.filter((s: string) => !selectedSymptoms.includes(s));
 };

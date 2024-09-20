@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
-
 import { ReactFlowInstance, useNodesState, useEdgesState } from "reactflow";
-
 import { useDispatch } from "react-redux";
 
-import { updateNodesAndEdges, getLayoutedElements } from "./layout";
-
-import { evaluateConditions } from "./evaluate";
 import { fetchAllConditions } from "../api/api";
 import { ConditionType } from "../types/data";
+
+import { generateFilteredConditions, generateNewSymptoms, generateSymptomsNodes } from "./generate";
+import { updateNodesAndEdges, getLayoutedElements, createNewConditionNode } from "./layout";
+import { setSymptoms, addSymptom } from "../redux/symptoms/slice";
+import { setConditions } from "../redux/conditions/slice";
+import { evaluateConditions } from "./evaluate";
 import { setUpConditions } from "./utils";
 import { getState } from "./state";
 
@@ -58,4 +59,31 @@ export function useSimilarConditions() {
     }, [selectedSymptoms]);
 
     return similarConditions;
+}
+
+// this hook is used to manage the state of the symptom node when it is clicked.
+export function useSymptomNode(symptom: string, parentID: string, clickable: boolean) {
+    const { totalConditions, selectedSymptoms } = getState();
+    const dispatch = useDispatch();
+
+    const handleOnClick = () => {
+        if (!clickable) return;
+
+        const pId = parentID;
+        const symptomUpperCase = symptom.toUpperCase();
+
+        const noZeroSimilarity = generateFilteredConditions(symptomUpperCase, totalConditions);
+        const evaluatedConditions = evaluateConditions(noZeroSimilarity, [...selectedSymptoms, symptomUpperCase]);
+        dispatch(setConditions(evaluatedConditions));
+
+        const newSymptoms = generateNewSymptoms(noZeroSimilarity, symptomUpperCase, selectedSymptoms);
+        dispatch(setSymptoms(newSymptoms));
+
+        dispatch(addSymptom(symptom));
+        const newNodes = generateSymptomsNodes(newSymptoms, pId, dispatch);
+
+        createNewConditionNode(newSymptoms, evaluatedConditions, newNodes, dispatch);
+    };
+
+    return { handleOnClick };
 }

@@ -4,10 +4,11 @@ import { NODE_WIDTH, NODE_HIGHT } from "../react_flow_components/constants";
 import { UnknownAction } from "@reduxjs/toolkit";
 import { Dispatch } from "react";
 import { setMatchFound } from "../redux/conditions/slice";
-import { setNodeState, setEdgeState } from "../redux/nodes/slice";
+import { setNodeState, setEdgeState, addNode } from "../redux/nodes/slice";
 import { playMatchFoundAnimation, zoomInOnNode } from "./animations";
 import { generateEdgesForNodesOnPath } from "./generate";
 import { createEdges } from "./nodesAndEdges";
+import { ConditionType } from "../types/data";
 
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
@@ -145,4 +146,19 @@ export const makeNodesUnclickable = (nodes: Node[]) => {
     });
 
     return unclickableNodes;
+};
+
+export const createNewConditionNode = (newSymptoms: string[], evaluatedConditions: ConditionType[], newNodes: any, dispatch: Dispatch<UnknownAction>) => {
+    if (newSymptoms.length === 1) {
+        const lastNodeId = newNodes[0].id;
+        const newConditionNode = {
+            id: "conditionNode",
+            type: "conditionNode",
+            data: { condition: evaluatedConditions[0] },
+            position: { x: 0, y: 0 },
+            parentId: lastNodeId,
+        };
+
+        dispatch(addNode(newConditionNode));
+    }
 };
