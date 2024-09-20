@@ -1,12 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
-import "./index.css";
-import { Provider } from "react-redux";
+
 import store from "./redux/store.ts";
+import { Provider } from "react-redux";
+
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Conditions from "./pages/conditions/Conditions.tsx";
-import Condition from "./pages/conditions/Condition.tsx";
+
+import Conditions from "./pages/Conditions.tsx";
+import Condition from "./pages/Condition.tsx";
+import App from "./App.tsx";
+
+import "./index.css";
 
 const router = createBrowserRouter([
 	{

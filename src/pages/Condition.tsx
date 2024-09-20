@@ -1,21 +1,22 @@
-import React from "react";
-import { capitalizeFirstLetter } from "../../utils/utils";
-import { ConditionType } from "../../types/data";
-import { useParams } from "react-router-dom";
-import { fetchCondition } from "../../api/api";
-import Nav from "../../components/Nav";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { fetchCondition } from "../api/api";
+import Nav from "../components/Nav";
+import { ConditionType } from "../types/data";
+import { capitalizeFirstLetter } from "../utils/utils";
+
 
 function Condition() {
     const displayTitle = useSelector((state: any) => state.uiState.displayTitle);
 
 	const { id } = useParams<{ id: string }>();
-	const [condition, setCondition] = React.useState<{
+	const [condition, setCondition] = useState<{
 		condition: ConditionType;
 		symptoms: string[];
 	} | null>(null);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		fetchCondition(id!).then((data) => {
 			setCondition(data);
 		});
