@@ -1,11 +1,16 @@
 import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Handle, Position } from "reactflow";
-import { capitalizeFirstLetter } from "../utils/utils";
+import { Position } from "reactflow";
+
 import { setDisplayInstructions } from "../redux/ui/slice";
+import { capitalizeFirstLetter } from "../utils/utils";
 import { getState } from "../utils/state";
 import { init } from "../utils/init";
+
+import Instructions from "../components/Instructions";
+import NodeHandle from "../components/NodeHandle";
 import DisplaySVG from "../components/DisplaySVG";
+import Button from "../components/Button";
 
 function InitSymptomNode() {
     const { totalSymptoms, totalConditions, displayInstructions, displayTitle } = getState();
@@ -49,26 +54,10 @@ function InitSymptomNode() {
 
 	return (
 		<div className="relative">
-			{displayInstructions && (
-				<div className="hidden bg-green-400 p-1 rounded-sm bg-opacity-60 absolute z-30 top-[-300%] text-[6px] font-semibold max-sm:block animate-fade-in">
-					<span className="underline">How to use:</span>
-					<div className="p-1 flex flex-col">
-						<span>1. Type the symptom you are experiencing.</span>
-						<span>2. Select a symptom.</span>
-						<span>
-							3. Press <span className="text-black">Enter</span>
-						</span>
-					</div>
-				</div>
-			)}
+			{displayInstructions && ( <Instructions /> )}
 
 			<div className="p-1 bg-blue-500 rounded-sm shadow-lg relative">
-				<Handle
-					type="target"
-					position={Position.Left}
-					className="bg-blue-500"
-					id="a"
-				/>
+				<NodeHandle type="target" position={Position.Left} id="a" />
 
 				<div className="w-fit relative">
 					{displayTitle && (
@@ -130,28 +119,25 @@ function InitSymptomNode() {
 					)}
 				</div>
 
-				<Handle
-					type="source"
-					position={Position.Right}
-					className="bg-blue-500"
-					id="b"
-				/>
+				<NodeHandle type="source" position={Position.Right} id="b" />
 			</div>
 
-			<button
-				className="absolute cursor-grab"
-				onKeyDown={ (e) => { if (e.key === "Enter") handleSubmit() } }
-				ref={parentRef}>    
-            </button>
+			<Button
+                text=""
+				style="absolute cursor-grab"
+				props={{
+					onKeyDown: (e: React.KeyboardEvent<HTMLButtonElement>) => { if (e.key === "Enter") handleSubmit(); },
+					ref: parentRef
+				}}
+			/>    
 
 			{displayInstructions && (
 				<div className="absolute w-full flex justify-center top-[350%]">
-					<button
-						onClick={() => handleSubmit()}
-						disabled={disableEnter}
-						className="hidden bg-black text-white py-1 px-2 rounded-sm absolute z-30 text-[6px] font-semibold max-sm:block">
-						Enter
-					</button>
+					<Button
+                        text="Enter"
+						style="hidden bg-black text-white py-1 px-2 rounded-sm absolute z-30 text-[6px] font-semibold max-sm:block"
+						props={{ onClick: () => handleSubmit(), disabled: disableEnter, }}
+					/>
 				</div>
 			)}
 		</div>
